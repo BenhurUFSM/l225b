@@ -61,4 +61,4 @@ Os assuntos vistos em aula serão listados aqui.
 
 ## Dados individuais
 
-Breve aqui, uma planilha com informações sobre cada aluno.
+Na [planilha](https://docs.google.com/spreadsheets/d/1xBdLXID03J-N9uPoaCywutAShOdyLN_fFFh9HcTSQA0/edit?usp=sharing).
