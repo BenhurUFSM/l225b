@@ -51,8 +51,8 @@ struct cc {
 //   e podem ser alteradas.
 
 
-// cria e retorna uma cc que contém uma cópia da string C em str
-// a cc retornada é alterável
+// cria e retorna uma cc que referencia a string C em str
+// a cc retornada não é alterável
 cc cc_cria(char *str);
 
 // macro para criar uma cc que contém a string C constante em s (não uma cópia)
