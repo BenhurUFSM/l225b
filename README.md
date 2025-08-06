@@ -52,12 +52,13 @@ Os assuntos vistos em aula serão listados aqui.
 |    N |   data | assunto
 | ---: | -----: | :--------
 |    1 |   4ago | apresentação, [revisão de lab I](Assuntos/lab1.md), [prova 1](Complementos/r1.md), [trabalho 1](Trabalhos/t1), tema (em t1)
+|    2 |   6ago | [exercício de revisão](Aulas/a2.md)
 
 ## Exercícios, trabalhos
 
 |     N |     prazo | descrição
 | ----: | --------: | :-----------
-|    T1 |           | 
+|    T1 |           | [implementação de strings](Trabalhos/t1)
 
 ## Dados individuais
 

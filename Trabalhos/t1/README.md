@@ -25,3 +25,5 @@ Suponha que `s` tenha tamanho 12, e conteúdo "abacaxi".
 - A chamada `strsubst(12, s, 0, 0, "Um ")` deve substituir o valor em `s` por "Um abacaxi".
 - A chamada `strsubst(12, s, 0, 0, "Umas ")` deve não alterar o valor em `s` e retornar `false`.
 
+
+A descrição mais completa ainda não apareceu, mas dá para dar uma olhada no [código](Codigo) fornecido para ter uma ideia.
