@@ -26,4 +26,23 @@ Suponha que `s` tenha tamanho 12, e conteúdo "abacaxi".
 - A chamada `strsubst(12, s, 0, 0, "Umas ")` deve não alterar o valor em `s` e retornar `false`.
 
 
-A descrição mais completa ainda não apareceu, mas dá para dar uma olhada no [código](Codigo) fornecido para ter uma ideia.
+## Parte I
+
+Inicialmente, vamos implementar um grupo de funções para tratar strings constantes.
+A descrição dessas funções está no arquivo [bb1.h](Codigo/bb1.h), com uma implementação
+parcial (a ser completada por cada aluno) em [bb1.c](Codigo/bb1.c).
+O arquivo [bb1_tst.c](Codigo/bb1_tst.c) contém um programa para testar as funções.
+
+## Parte II
+
+Complemente a implementação com funções que permitem alterar strings.
+Nossas strings agora podem ser constantes ou alteráveis.
+As strings alteráveis usam um vetor para conter os caracteres da string.
+
+A descrição das funções de alteração aparecerão breve.
+
+## Parte III
+
+As strings agora farão o gerenciamento de sua memória, com alocação dinâmica conforme a necessidade.
+
+Descrição breve.
