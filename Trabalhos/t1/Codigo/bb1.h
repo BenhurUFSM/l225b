@@ -111,6 +111,6 @@ int bb_busca_bb(bb cad, int pos, bb buscada);
 bool bb_igual(bb cad, bb outra_cad);
 
 // imprime a cadeia em cad na saída padrão
-void bb_print(bb cad);
+void bb_imprime(bb cad);
 
 #endif // _BB_H_

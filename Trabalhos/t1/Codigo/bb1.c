@@ -89,7 +89,7 @@ bool bb_igual(bb cad, bb outra_cad)
   return false;
 }
 
-void bb_print(bb cad)
+void bb_imprime(bb cad)
 {
   bb_ok(cad);
   fwrite(cad.mem, 1, cad.tam, stdout);
