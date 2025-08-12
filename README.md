@@ -53,7 +53,7 @@ Os assuntos vistos em aula serão listados aqui.
 | ---: | -----: | :--------
 |    1 |   4ago | apresentação, [revisão de lab I](Assuntos/lab1.md), [prova 1](Complementos/r1.md), [trabalho 1](Trabalhos/t1), tema (em t1)
 |    2 |   6ago | [exercício de revisão](Aulas/a2.md)
-|    3 |  11ago | falaremos sobre o código do t1, dá uma olhada nele, principalmente no .h.
+|    3 |  11ago | tipos abstratos de dados (TAD); t1
 
 ## Exercícios, trabalhos
 
@@ -64,3 +64,17 @@ Os assuntos vistos em aula serão listados aqui.
 ## Dados individuais
 
 Na [planilha](https://docs.google.com/spreadsheets/d/1xBdLXID03J-N9uPoaCywutAShOdyLN_fFFh9HcTSQA0/edit?usp=sharing).
+
+## Bibliografia
+
+Os livros abaixo estão disponíveis no [minha biblioteca](https://www.ufsm.br/orgaos-suplementares/biblioteca/e-books-2/), acessível aos alunos da UFSM.
+
+Estruturas de Dados e Seus Algoritmos - Jayme Szwarcfiter e Lilian Markenzon
+
+Estruturas de Dados - Nina Edelweiss e Renata Galante
+
+Estruturas de Dados em C, Uma Abordagem Didática - Sílvio Pereira
+
+Introdução a Estruturas de Dados - Com Técnicas de Programação em C - Waldemar Celes
+
+Estrutura de Dados - Adriana de S. Vetorazzo, Mauício de O. Saraiva, Jeanine dos S. Barreto, Ramiro S. Córdova Jr.
