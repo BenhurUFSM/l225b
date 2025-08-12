@@ -35,11 +35,11 @@ Caso implemente alguma outra função (em geral alguma função auxiliar), devem
 
 Em um .c que seja cliente (que use) o TAD, deve haver a inclusão do arquivo *tad*.h, e o cliente só tem o direito de usar os tipos e funções ali declarados para operar sobre um dado desse tipo.
 
-Todos os TADs terão funções para a criação e destruição (construtores e destrutores) de uma variável do tipo especificado, com os nomes *tad_create()* e *tad_destroy()*.
+Todos os TADs terão funções para a criação e destruição (construtores e destrutores) de uma variável do tipo especificado, com os nomes *tad_cria()* e *tad_destroi()*.
 A primeira recebe argumentos necessários à criação de uma variável, aloca memória para essa variável, inicializa essa memória e retorna um ponteiro para a variável criada.
 A segunda recebe um ponteiro para a variável a ser destruída, realiza alguma operação de finalização do dado se for necessário, libera a memória ocupada pelo dado.
 
-O t1 é uma exceção, e não segue estas regras totalmente. O tipo `ss` não é um ponteiro, é a própria *struct*.
+O t1 é uma exceção, e não segue estas regras totalmente. O tipo `cc` não é um ponteiro, é a própria *struct*.
 
 ## Exemplo de implementação de um TAD
 
@@ -54,61 +54,61 @@ As operações a realizar sobre dados desse tipo (é só um exemplo, poderia ter
 - cálculo do número de dias entre duas datas
 - obtenção de uma data a tantos dias de distância da outra
 
-O arquivo `date.h`:
+O arquivo `data.h`:
 ```c
-   #ifndef _DATE_H_    // para evitar a inclusão múltipla deste arquivo
-   #define _DATE_H_
+   #ifndef _DATA_H_    // para evitar a inclusão múltipla deste arquivo
+   #define _DATA_H_
    
    // o tipo de dados Data
-   typedef struct date *Date;
+   typedef struct data *Data;
    
    // criação de uma data
-   Date date_create(int dia, int mes, int ano);
+   Data data_cria(int dia, int mes, int ano);
    
    // destruição de uma data
-   void date_destroy(Date d);
+   void data_destroi(Data d);
    
    // obtenção do dia da data
-   int date_day(Date d);
+   int data_dia(Data d);
    
    // obtenção do mês da data
-   int date_month(Date d);
+   int data_mes(Data d);
    
    // obtenção do ano da data
-   int data_year(Date d);
+   int data_ano(Data d);
    
    // cálculo do número de dias entre duas datas
-   int date_days_until(Date d, Date d2);
+   int data_dias_ate(Data d, Data d2);
    
    // obtenção de uma data a tantos dias de distância da outra
-   Date date_after_days(Data d, int dias);
+   Data data_apos_dias(Data d, int dias);
    
-   #endif  // _DATE_H_
+   #endif  // _DATA_H_
 ```
-O arquivo `date.c`
+O arquivo `data.c`
 ```c
-   #include "date.h"
+   #include "data.h"
    #include <stdbool.h>
    #include <stdlib.h>
    
-   typedef struct date {
+   typedef struct data {
      int dia;
      int mes;
      int ano;
-   } date;
+   };
    
    // função auxiliar que retorna true se for data válida
-   static bool date_ok(int d, int m, int a)
+   static bool data_ok(int d, int m, int a)
    {
      // testes para ver se d/m/a constituem uma data válida
      // ...
      return false; // ou nao
    }
    
-   Data date_create(int dia, int mes, int ano)
+   Data data_cria(int dia, int mes, int ano)
    {
-     if (!date_ok(dia, mes, ano)) return NULL;
-     Date d = malloc(sizeof(struct date));
+     if (!data_ok(dia, mes, ano)) return NULL;
+     Data d = malloc(sizeof(struct data));
      if (d != NULL) {
        d->dia = dia;
        d->mes = mes;
@@ -118,31 +118,31 @@ O arquivo `date.c`
    }
    
    // destruição de uma data
-   void date_destroy(Date d)
+   void data_destroi(Data d)
    {
      free(d);
    }
    
    // obtenção do dia da data
-   int date_day(Date d)
+   int data_dia(Data d)
    {
      return d->dia;
    }
    
    // obtenção do mês da data
-   int date_month(Date d)
+   int data_mes(Data d)
    {
      return d->mes;
    }
    
    // obtenção do ano da data
-   int date_year(Date d)
+   int data_ano(Data d)
    {
      return d->ano;
    }
    
    // cálculo do número de dias entre duas datas
-   int date_days_until(Date d, Date d2)
+   int data_dias_ate(Data d, Data d2)
    {
      if (d->mes == d2->mes && d->ano == d2->ano) {
        return d2->dia - d->dia;
@@ -151,9 +151,9 @@ O arquivo `date.c`
    }
    
    // obtenção de uma data a tantos dias de distância da outra
-   Date date_after_days(Date d, int days)
+   Data data_apos_dias(Data d, int dias)
    {
-     return date_create(d->dia + days, d->mes, d->ano); // talvez necessite refinamentos
+     return data_cria(d->dia + dias, d->mes, d->ano); // talvez necessite refinamentos
    }
 ```
 Um possível cliente:
@@ -163,16 +163,16 @@ Um possível cliente:
    
    int main()
    {
-     Date hoje, amanha;
+     Data hoje, amanha;
      
-     hoje = date_create(28, 3, 2024);
-     amanha = date_after_days(hoje, 1);
+     hoje = data_cria(28, 3, 2024);
+     amanha = data_apos_dias(hoje, 1);
      printf("Amanhã será ");
-     date_print(amanha);
+     data_print(amanha);
      printf(".\n");
      
-     date_destroy(hoje);
-     date_destroy(amanha);
+     data_destroi(hoje);
+     data_destroi(amanha);
    }
 ```
 

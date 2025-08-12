@@ -53,7 +53,7 @@ Os assuntos vistos em aula serão listados aqui.
 | ---: | -----: | :--------
 |    1 |   4ago | apresentação, [revisão de lab I](Assuntos/lab1.md), [prova 1](Complementos/r1.md), [trabalho 1](Trabalhos/t1), tema (em t1)
 |    2 |   6ago | [exercício de revisão](Aulas/a2.md)
-|    3 |  11ago | tipos abstratos de dados (TAD); t1
+|    3 |  11ago | [tipos abstratos de dados](Assuntos/tad.md) (TAD); t1
 
 ## Exercícios, trabalhos
 
