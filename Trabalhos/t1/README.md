@@ -22,3 +22,9 @@ A descrição das funções está em [bb2.h](Codigo/bb2.h)
 As strings alteráveis agora farão o gerenciamento de sua memória, com alocação dinâmica conforme a necessidade.
 
 Descrição em [cc.h](Codigo/cc.h).
+
+## Como entregar
+
+Crie um diretório chamado "l2-t1-*apelido*" (substitua "*apelido*" pelo seu apelido na planilha), coloque dentro o que quer enviar (`cc.c`), comprima o diretório (tgz, zip, etc), anexe a um mail para "benhur+l225b@inf.ufsm.br" com assunto "entrega l2-t2-*apelido*".
+
+O prazo de entrega é 20ago. Envio dia 21 é depois do prazo. Envio dia 20 é no prazo.

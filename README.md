@@ -60,7 +60,7 @@ Os assuntos vistos em aula serão listados aqui.
 
 |     N |     prazo | descrição
 | ----: | --------: | :-----------
-|    T1 |           | [implementação de strings](Trabalhos/t1)
+|    T1 |     20ago | [implementação de strings](Trabalhos/t1)
 
 ## Dados individuais
 
