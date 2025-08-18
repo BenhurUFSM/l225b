@@ -55,6 +55,7 @@ Os assuntos vistos em aula serão listados aqui.
 |    2 |   6ago | [exercício de revisão](Aulas/a2.md)
 |    3 |  11ago | [tipos abstratos de dados](Assuntos/tad.md) (TAD); t1
 |    4 |  13ago | revisão: alocação dinâmica de memória; arquivos
+|    5 |  18ago | [listas](Assuntos/listas.md)
 
 ## Exercícios, trabalhos
 
