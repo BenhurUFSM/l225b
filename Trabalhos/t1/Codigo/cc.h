@@ -185,7 +185,7 @@ void cc_preenche(cc *pcad, int tam, char c);
 //   -3,0,"123" -> "abac123axi"
 //   0,1,"123" -> "123bacaxi"
 //   -9,1,"123" -> "123%abacaxi"
-//   3,200,"" -> "ab"
+//   2,200,"" -> "ab"
 void cc_subst(cc *pcad, int pos, int tam, cc cadb, char preenche);
 
 
