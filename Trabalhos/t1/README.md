@@ -28,3 +28,6 @@ Descrição em [cc.h](Codigo/cc.h).
 Crie um diretório chamado "l2-t1-*apelido*" (substitua "*apelido*" pelo seu apelido na planilha), coloque dentro o que quer enviar (`cc.c`), comprima o diretório (tgz, zip, etc), anexe a um mail para "benhur+l225b@inf.ufsm.br" com assunto "entrega l2-t2-*apelido*".
 
 O prazo de entrega é 20ago. Envio dia 21 é depois do prazo. Envio dia 20 é no prazo.
+
+Antes de entregar, compile e rode com a última versão de `cc_tst.c`.
+Sugiro também rodar com `valgrind` para identificar eventuais erros de memória.
