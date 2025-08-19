@@ -4,7 +4,9 @@
 
 void testa_arquivo()
 {
-  cc a = cc_le_arquivo(cc_("cc_tst.c"));
+  char *nome = "cc_tst.c";
+  printf("===============\n");
+  cc a = cc_le_arquivo(cc_cria(nome));
   int p = 0, q = 0;
   while (p < cc_tam(a)) {
     q = cc_busca_c(a, p, cc_("\n"));
@@ -16,6 +18,8 @@ void testa_arquivo()
     p = q + 1;
   }
   cc_destroi(a);
+  printf("===============\n");
+  printf("Verifique se o texto acima corresponde ao conteúdo de '%s'\n\n", nome);
 }
 
 void println(cc c)
@@ -28,10 +32,13 @@ void println(cc c)
 
 void testa_iguais(cc a, cc b)
 {
+  static int n = 0;
+  n++;
+  printf("teste %d: ", n);
   if (cc_igual(a, b)) {
-    printf("teste OK\n");
+    printf("OK\n");
   } else {
-    printf("teste falhou, '");
+    printf("falhou, '");
     cc_imprime(a);
     printf("' e '");
     cc_imprime(b);
@@ -42,27 +49,24 @@ void testa_subst()
 {
   cc c = cc_("teste.");
   cc d = cc_copia(c);
+  cc e;
   testa_iguais(c, d);
-  cc e = cc_sub(c, 1, 3);
-  println(e);
+  e = cc_sub(c, -4, 2);
+  testa_iguais(e, cc_("st"));
+  e = cc_sub(c, 1, 3);
   testa_iguais(e, cc_("est"));
   cc_subst(&d, 3, 10, e, 'X');
-  println(d);
   testa_iguais(d, cc_("tesest"));
   cc_subst(&d, cc_tam(d), 10, cc_("Y"), 'B');
-  println(d);
   testa_iguais(d, cc_("tesestY"));
   cc_subst(&d, 0, 0, cc_("a"), 'B');
-  println(d);
   testa_iguais(d, cc_("atesestY"));
   cc_subst(&d, cc_busca_c(d, 0, cc_("se")), 1, cc_(""), 0);
-  println(d);
   testa_iguais(d, cc_("atsestY"));
-  cc f = cc_sub(d, -2, 20);
-  println(f);
-  testa_iguais(f, cc_("tY"));
-  printf("\n[%s]\n[%.*s]\n[%.*s]\n[%s]\n", d.mem, d.tam, d.mem, e.tam, e.mem, e.mem);
-  printf("\n[%.*s]%d\n", f.tam, f.mem, f.tam);
+  cc_subst(&d, cc_busca_rc(d, 0, cc_("se")), 1, cc_(""), 0);
+  testa_iguais(d, cc_("atsetY"));
+  e = cc_sub(d, -2, 20);
+  testa_iguais(e, cc_("tY"));
 	cc_destroi(c);
 	cc_destroi(d);
 }
