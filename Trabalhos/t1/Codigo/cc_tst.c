@@ -63,7 +63,7 @@ void testa_subst()
   testa_iguais(d, cc_("atesestY"));
   cc_subst(&d, cc_busca_c(d, 0, cc_("se")), 1, cc_(""), 0);
   testa_iguais(d, cc_("atsestY"));
-  cc_subst(&d, cc_busca_rc(d, 0, cc_("se")), 1, cc_(""), 0);
+  cc_subst(&d, cc_busca_rc(d, -1, cc_("se")), 1, cc_(""), 0);
   testa_iguais(d, cc_("atsetY"));
   e = cc_sub(d, -2, 20);
   testa_iguais(e, cc_("tY"));
