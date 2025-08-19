@@ -45,11 +45,12 @@ Sugiro também rodar com `valgrind` para identificar eventuais erros de memória
    - executa o programa de teste
       - `./teste`
       - se acusou algum erro, corrige e volta a compilar
+   - coloca mais algum teste em cc_tst.c, caso queira testar mais casos; compila etc
    - executa com o valgrind
       - `valgrind ./teste`
       - se deu alguma mensagem de problema de memória, corrige e volta a compilar
       - em alguns casos, o valgrind diz que pode ser executado com mais opções para ter mais informação sobre o problema (como `valgrind    -leak-check=full` por exemplo)
-   - cria um diretório `l2-t1-*fulano*`, se ainda não o fez; e coloca cc.c dentro
+   - cria um diretório `l2-t1-*fulano*`, se ainda não o fez; e coloca cc.c (e o cc_tst, caso tenha colocado mais testes) dentro
    - compacta esse diretório (por exemplo, `tar czf l2-t1-*fulano*.tgz l2-t1-fulano`)
    - anexa o arquivo compactado em um mail, coloca o assunto como pedido, envia para o endereço pedido
    - descansa
