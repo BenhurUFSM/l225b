@@ -56,12 +56,14 @@ Os assuntos vistos em aula serão listados aqui.
 |    3 |  11ago | [tipos abstratos de dados](Assuntos/tad.md) (TAD); t1
 |    4 |  13ago | revisão: alocação dinâmica de memória; arquivos
 |    5 |  18ago | [listas](Assuntos/listas.md)
+|    6 |  20ago | [implementação de listas I](Assuntos/listas.md)
+|      |  25ago | não tem aula presencial
 
 ## Exercícios, trabalhos
 
 |     N |     prazo | descrição
 | ----: | --------: | :-----------
-|    T1 |     20ago | [implementação de strings](Trabalhos/t1)
+|    T1 |     25ago | [implementação de strings](Trabalhos/t1)
 
 ## Dados individuais
 
