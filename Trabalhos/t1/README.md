@@ -32,7 +32,7 @@ O prazo de entrega é 20ago. Envio dia 21 é depois do prazo. Envio dia 20 é no
 Antes de entregar, compile e rode com a última versão de `cc_tst.c`.
 Sugiro também rodar com `valgrind` para identificar eventuais erros de memória.
 
-## RAP (Respostas às questões)
+## RAP (Respostas a perguntas)
 
 - Não entendi muito bem o que é pra fazer
 
