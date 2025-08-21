@@ -64,6 +64,7 @@ Os assuntos vistos em aula serão listados aqui.
 |     N |     prazo | descrição
 | ----: | --------: | :-----------
 |    T1 |     25ago | [implementação de strings](Trabalhos/t1)
+|    T2 |           | suporte a unicode nas strings; lista de strings (breve)
 
 ## Dados individuais
 
