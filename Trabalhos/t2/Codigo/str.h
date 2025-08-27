@@ -133,6 +133,13 @@ unichar s_ch(str cad, int pos);
 //   pos=10, tam=5 sub="" (pos é ajustado para o final da string, tam para 0)
 str s_sub(str cad, int pos, int tam);
 
+// retorna una cadeia que é uma substring de cad, sem eventuais caracteres
+//   pertencentes a sobras no início e no final de cad
+// a cadeia retornada é não alterável e referencia a cadeia original
+// apara("teste 1", " .") -> "teste 1"
+// apara("  teste 2. ", " .") -> "teste 2"
+str s_apara(str cad, str sobras);
+
 
 // operações de busca {{{1
 
@@ -252,5 +259,15 @@ void s_imprime(str cad);
 // é responsabilidade de quem chama esta função liberar essa memória.
 char *s_strc(str cad);
 
+#include "lstr.h"
+// retorna uma lista de substrings de cad, delimitadas em cad por algum dos
+//   caracteres em separadores. Os separadores não são colocados nas substrings.
+// as substrings referenciam cad, que não deve ser alterada enquanto essas
+//   substrings estiverem sendo usadas.
+// separa "abacaxi,banana;maçã", ",;" -> ["abacaxi", "banana", "maçã"]
+// separa "abacaxi,banana;maçã", "," -> ["abacaxi", "banana;maçã"]
+Lstr s_separa(str cad, str separadores);
+
 #endif // _STR_H_
 // vim: foldmethod=marker shiftwidth=2
+
