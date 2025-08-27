@@ -2,6 +2,7 @@
 
 Suporte a caracteres unicode codificados em UTF8 nas strings.
 Estude o código fornecido, em `str.h`, `str.c` e `str_tst.c`.
+A implementação completa de str está em str-i.c.
 Caso encontre erros, por favor comunique.
 
 # t2 - parte II

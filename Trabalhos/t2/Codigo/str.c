@@ -145,7 +145,7 @@ int u8_nchars_na_strC(char *s)
 // testa se um número é potência de 2
 static bool pot2(int n)
 {
-    return n == (n & -n);
+  return n == (n & -n);
 }
 
 // verifica se a string cad está de acordo com a especificação
