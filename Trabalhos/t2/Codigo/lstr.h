@@ -57,7 +57,10 @@ void ls_destroi(Lstr self);
 
 // operações de acesso {{{1
 
-// retorna o tamanho (número de strings) da lista
+// retorna true se não houver nenhum elemento na lista
+bool ls_vazia(Lstr self);
+
+// retorna o tamanho (número de elementos) da lista
 int ls_tam(Lstr self);
 
 // retorna true se existe um item na posição corrente
@@ -129,6 +132,10 @@ Lstr ls_sublista(Lstr self, int tam);
 //   em separador
 // junta(["abacaxi", "abóbora", "abacate"], ", ") -> "abacaxi, abóbora, abacate"
 str ls_junta(Lstr self, str separador);
+
+// imprime todos os itens da lista
+// após a impressão, o item corrente pode ser qualquer
+void ls_imprime(Lstr self);
 
 #endif // _LSTR_H_
 // vim: foldmethod=marker shiftwidth=2
