@@ -610,6 +610,7 @@ Lstr s_separa(str cad, str separadores)
   Lstr lista = ls_cria();
   int ini = 0, fim;
   while (ini < s_tam(cad)) {
+    // busca a posição do primeiro separador após ini
     fim = s_busca_c(cad, ini, separadores);
     if (fim == -1) fim = s_tam(cad);
     ls_insere_depois(lista, s_sub(cad, ini, fim - ini));
