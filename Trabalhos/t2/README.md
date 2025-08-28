@@ -27,6 +27,7 @@ Compare o desempenho das duas implementações: faça um programa que cria uma l
 Meça o tempo para inserir esses itens (meça com a inserção acontecendo no final da lista e com a inserção acontecendo no início).
 Meça o tempo para percorrer a lista toda, do início ao fim e vice-versa.
 Meça o tempo para acessar metade dos itens da lista, em posições aleatórias.
+Meça o desempenho de operações de alteração (faça tantas vezes: sorteia uma posição aleatória dentro da lista, sorteia se vai fazer uma inserção ou remoção nessa posição, e faz)
 
 Para medir o tempo, dá para usar a função clock:
 ```c
