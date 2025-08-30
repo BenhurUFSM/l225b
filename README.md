@@ -58,6 +58,8 @@ Os assuntos vistos em aula serão listados aqui.
 |    5 |  18ago | [listas](Assuntos/listas.md)
 |    6 |  20ago | [implementação de listas I](Assuntos/listas.md)
 |      |  25ago | não tem aula presencial
+|    7 |  27ago | [implementação de listas II](Assuntos/listas.md)
+|    8 |   1set | **aula na sala 431 (nupedee)**
 
 ## Exercícios, trabalhos
 
