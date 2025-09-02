@@ -337,6 +337,26 @@ int s_busca_rnc(str cad, int pos, str chs)
   return -1;
 }
 
+// retorna true se tam bytes em b1 são iguais aos em b2
+// poderia usar memcmp para isso
+static bool bytes_iguais(int tam, byte b1[tam], byte b2[tam])
+{
+  for (int i = 0; i < tam; i++) {
+    if (b1[i] != b2[i]) return false;
+  }
+  return true;
+}
+
+// procura agulha em palheiro, retorna a posição em palheiro onde está agulha, ou NULL
+static byte *busca_bytes(int tam_agulha, byte agulha[tam_agulha],
+                         int tam_palheiro, byte palheiro[tam_palheiro])
+{
+  for (int i = 0; i <= tam_palheiro - tam_agulha; i++) {
+    if (bytes_iguais(tam_agulha, palheiro + i, agulha)) return palheiro + i;
+  }
+  return NULL;
+}
+
 int s_busca_s(str cad, int pos, str buscada)
 {
   s_ok(cad);
@@ -346,7 +366,9 @@ int s_busca_s(str cad, int pos, str buscada)
   byte *end_ini = s_ender_pos_sm(cad, pos);
   byte *end_fim = cad.mem + cad.tamb;
   // usa memmem para procurar o byte onde inicia a string buscada
-  byte *end_achou = memmem(end_ini, end_fim - end_ini, buscada.mem, buscada.tamb);
+  // memmem não é padrão :(
+  // byte *end_achou = memmem(end_ini, end_fim - end_ini, buscada.mem, buscada.tamb);
+  byte *end_achou = busca_bytes(buscada.tamb, buscada.mem, end_fim - end_ini, end_ini);
   if (end_achou == NULL) return -1;
   // transforma os bytes contados em caracteres
   return pos + u8_conta_unichar_nos_bytes(end_ini, end_achou - end_ini);
