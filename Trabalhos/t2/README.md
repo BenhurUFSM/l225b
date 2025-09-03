@@ -60,3 +60,50 @@ A cada execução do valgrind dessa forma, ele gera um arquivo com um nome difer
 # t2 - parte IV
 
 breve
+
+# RAP - respostas a perguntas
+
+- aloca quanto?
+
+   para um vetor de n inteiros:
+   ```c
+   int v[n];
+   // ou
+   int *v;
+   v = malloc(n * sizeof(int));
+   ```
+   para um vetor de n estruturas do tipo xis:
+   ```c
+   xis v[n];
+   // ou
+   xis *v;
+   v = malloc(n * sizeof(xis));
+   ```
+   para um vetor de n ponteiros para estruturas de tipo xis:
+   ```c
+   xis *v[n];
+   // ou
+   xis **v;
+   v = malloc(n * sizeof(xis *));
+   // ou ainda
+   typedef xis *Xis;
+   Xis v[n];
+   // ou
+   Xis *v;
+   v = malloc(n * sizeof(Xis));
+   ```
+
+- como assim posições?
+
+   suponha que tenha uma lista com 3 elementos, A, V e C. Nessa lista, tem 5 posições válidas, antes de A, a posição de A, a posição de V, a posição de C e a posição depois de C (pi, pa, pv, pc, pf).
+
+   A função `ls_item_valido` nessa lista deve retornar `true` se a posição corrente for pa, pv ou pc, e `false` se for pi ou pf.
+
+   Se nessa lista for inserido o item X, dependendo se a inserção for antes ou depois, e se a posição corrente for cada uma dessas 5 posições, a lista vai ficar como abaixo. Após a inserção, em todos os casos a posição corrente será px.
+    | posição corrente | inserção antes | inserção depois |
+    | :---: | :---: | :---: |
+    | pi | XAVC | XAVC |
+    | pa | XAVC | AXVC |
+    | pv | AXVC | AVXC |
+    | pc | AVXC | AVCX |
+    | pf | AVCX | AVCX |
