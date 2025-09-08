@@ -80,3 +80,89 @@ A função que testa se uma árvore é vazia testa se o ponteiro é NULL no caso
 3. Faça uma função que recebe uma árvore e um valor e retorna um booleano que diz se a árvore contém ou não um nó com esse valor. Use a função auxiliar `bool valores_iguais(dado_t, dado_t)` para comparar dois valores.
 4. Faça uma função que recebe uma árvore e um valor e retorna o nível nessa árvore que está o nó que contém esse valor, ou -1 se o valor não estiver em nenhum nó da árvore. A raiz de uma árvore está no nível 0, os filhos da raiz no nível 1 etc.
 5. Faça uma função que recebe uma árvore e retorna o "fator de equilíbrio" do nó raiz dessa árvore. O "fator de equilíbrio" a ser considerado é a diferença entre a altura da subárvore esquerda e a da direita.
+
+### Dicas
+
+Uma função que pode auxiliar na depuração é uma que imprime uma árvore. Por exemplo:
+```c
+void imprime(arvore *a, int nivel)
+{
+   printf("%*s", nivel * 3, ""); // imprime 3*nivel espacos
+   if (vazia(a)) {
+      printf("-\n");
+      return;
+   }
+   printf("%d\n", a->dado);
+   imprime(a->esq, nivel + 1);
+   imprime(a->dir, nivel + 1);
+}
+```
+
+Uma forma de criar uma árvore é com uma função que cria um nó:
+```c
+arvore *arv_cria(dado_t dado)
+{
+   arvore *a = malloc(sizeof(*a));
+   assert(a != NULL);
+   a->dado = dado;
+   a->esq = NULL;
+   a->dir = NULL;
+   return a;
+}
+//...
+   arvore *a = arv_cria(10);
+   a->esq = arv_cria(2);
+   a->esq->dir = arv_cria(5);
+   a->dir = arv_cria(17);
+   imprime(a, 0);
+//...
+```
+
+Outra forma:
+```c
+   arvore *no(dado_t d, arvore *esq, arvore *dir)
+   {
+      arvore *n = malloc(sizeof(arvore));
+      assert(n != NULL);
+      n->val = d;
+      n->esq = esq;
+      n->dir = dir;
+      return n;
+   }
+   //...
+   arvore *a = no(1, no(2, NULL, NULL), no(3, NULL, NULL));
+```
+
+Ainda outra forma, com a árvore vazia representada por um nó com ponteiros NULL:
+```c
+   bool arv_vazia(arvore *a)
+   {
+      assert(a != NULL);
+      return a->esq == NULL && a->dir == NULL;
+   }
+
+   arvore *arv_cria(void)
+   {
+      arvore *n = malloc(sizeof(arvore));
+      assert(n != NULL);
+      // o valor nunca vai ser usado
+      n->esq = NULL;
+      n->dir = NULL;
+      return n;
+   }
+   
+   void arv_troca_valor(arvore *a, dado_t d)
+   {
+      if (arv_vazia(a)) {
+         // vai deixar de ser uma árvore vazia, coloca árvores vazias como filhos
+         a->esq = arv_cria();
+         a->dir = arv_cria();
+      }
+      a->val = d;
+   }
+   //...
+   arvore *a = arv_cria();
+   arv_troca_valor(a, 1);
+   arv_troca_valor(a->esq, 2);
+   arv_troca_valor(a->dir, 3);
+```
