@@ -166,3 +166,87 @@ Ainda outra forma, com a árvore vazia representada por um nó com ponteiros NUL
    arv_troca_valor(a->esq, 2);
    arv_troca_valor(a->dir, 3);
 ```
+
+### Percurso em uma árvore
+
+Um percurso em uma árvore é uma forma de caminhamento entre os nós da árvore, que visita todos os nós.
+Dependendo da ordem em que os nós são visitados, tem-se percursos diferentes.
+Os principais tipos de percurso em uma árvore são:
+- percurso em largura: visita os nós, a partir da raiz, um nível por vez (primeiro visita a raiz, depois todos seus filhos, depois todos seus netos etc);
+- percurso em profundidade: visita os nós, percorrendo um ramo até seu final antes de seguir pelo ramo seguinte. Tem três percursos em profundidade principais:
+   - percurso em pré-ordem: visita primeiro um nó, antes de realizar um percurso em pré-ordem iniciando em cada um de seus filhos;
+   - percurso em pós-ordem: percorre em pós-ordem cada um dos filhos de um nó antes de visitar o nó;
+   - percurso em-ordem (somente em árvores binárias): percorre em-ordem a subárvore esquerda, então visita o nó, e depois percorre em-ordem a subárvore direita.
+
+Esse percursos podem ainda ser subclassificados em "à esquerda" e "à direita", de acordo com a ordem que os filhos são percorridos.
+
+Esses percursos são tipicamente implementados por funções recursivas (exceto o percurso em largura), como abaixo:
+```
+   pre_ordem(arvore a)
+   {
+      se a não está vazia:
+         visita(a)
+         para cada sa, subárvore de a:
+            pre_ordem(sa)
+   }
+```
+No caso de uma árvore binária implementada como acima, um percurso em-ordem à esquerda poderia ser, em C:
+```c
+   void em_ordem(arv_t *a)
+   {
+     if (vazia(a)) return;
+     em_ordem(a->esq);
+     visita(a);
+     em_ordem(a->dir);
+   }
+```
+
+Em vez de uma função recursiva, pode-se implementar o percurso em profundidade com uma função não recursiva e a ajuda de uma pilha. O percurso em pré-ordem é o mais simples de ser implementado dessa forma:
+```c
+   void pre_ordem(arv_t *a)
+   {
+     if (vazia(a)) return;
+     Pilha p = pilha_cria();
+     pilha_insere(p, a);
+     while (!pilha_vazia(p)) {
+       a = pilha_remove(p);
+       visita(a);
+       if (!vazia(a->dir)) pilha_insere(p, a->dir);
+       if (!vazia(a->esq)) pilha_insere(p, a->esq);
+     }
+     pilha_destroi(p);
+   }
+```
+
+O percurso em largura é tipicamente implementado com o auxílio de uma fila:
+```
+   largura(arvore a)
+   {
+      fila f
+      se a não está vazia:
+         insere(f, a)
+      enquanto f não estiver vazia:
+         arvore b = remove(f)
+         visita(b)
+         para cada sa, subárvore de b:
+            insere(f, sa)
+   }
+```
+
+Considere a árvore descrita abaixo ('/' representa um filho inexistente; quem não tá na coluna da esquerda é folha):
+|  nó | esq | dir |
+| :---: | :---: | :---: |
+|  a  | b   | c   |
+|  b  | d   | e   |
+|  c  | /   | f   |
+|  d  | g   | /   |
+|  e  | i   | j   |
+|  f  | h   | k   |
+
+Em alguns dos percursos comuns, os nós seriam visitados na ordem abaixo:
+| percurso | ordem da visita |
+| :--- | :---:
+| pré-ordem à esquerda | a b d g e i j c f h k |
+| pré-ordem à direita  | a c f k h b e j i d g |
+| em-ordem à esquerda  | g d b i e j a c h f k |
+| em largura           | a b c d e f g i j h k |
