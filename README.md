@@ -62,6 +62,7 @@ Os assuntos vistos em aula serão listados aqui.
 |    8 |   1set | [implementação de listas III](Assuntos/listas.md)
 |    9 |   3set | [recursão](Assuntos/recursao.md), [dicionário](Assuntos/dicionario.md)
 |   10 |   8set | [árvores](Assuntos/arvores.md)
+|   11 |  10set | [percursos em árvores](Assuntos/arvores.md)
 
 ## Exercícios, trabalhos
 
