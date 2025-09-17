@@ -63,6 +63,8 @@ Os assuntos vistos em aula serão listados aqui.
 |    9 |   3set | [recursão](Assuntos/recursao.md), [dicionário](Assuntos/dicionario.md)
 |   10 |   8set | [árvores](Assuntos/arvores.md)
 |   11 |  10set | [percursos em árvores](Assuntos/arvores.md)
+|   12 |  15set | [árvores binárias de busca](Assuntos/arvores.md), [árvores AVL (inserção)](Assuntos/avl.md)
+|   13 |  17set | [árvores AVL (remoção)](Assuntos/avl.md)
 
 ## Exercícios, trabalhos
 
