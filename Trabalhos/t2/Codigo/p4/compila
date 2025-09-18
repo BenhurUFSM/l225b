@@ -1,0 +1,1 @@
+gcc -g -Wall ed.c tela.c str.c utf8.c lstr.c
