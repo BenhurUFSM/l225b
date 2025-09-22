@@ -865,6 +865,7 @@ int main()
   ed.jan = cria_jan(cria_texto(s_("exemplo.txt")));
   ed.modo = normal;
   ed.termina = false;
+  ed.selecao = NULL;  /* porque não foi feita uma função de inicialização? */
 
   while (!ed.termina) {
     ed_processa_tecla(&ed);
