@@ -25,6 +25,8 @@
 // (o código 101 poderia ser representado por 00000101 ou 11000000 10000101 por
 // exemplo), só a representação mais curta é considerada válida.
 
+#include <stdbool.h>
+
 // tipo para representar um byte
 // em C23 esse tipo seria char8_t
 typedef unsigned char byte;
