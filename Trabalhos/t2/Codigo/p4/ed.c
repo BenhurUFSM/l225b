@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+
 #include "tela.h"
 #include "str.h"
 #include "lstr.h"
@@ -88,15 +90,23 @@ typedef struct {
 } texto_t;
 
 // aloca e inicializa um texto à partir de um arquivo
-texto_t *cria_texto(str nome_arquivo)
+texto_t *texto_cria(str nome_arquivo)
 {
   texto_t *txt = malloc(sizeof(*txt));
+  assert(txt != NULL);
   txt->nome_arquivo = s_copia(nome_arquivo);
   str conteudo = s_le_arquivo(nome_arquivo);
   txt->linhas = s_separa(conteudo, s_("\n"));
   faz_lista_ter_copias_das_strings(txt->linhas);
   s_destroi(conteudo);
   return txt;
+}
+
+void texto_destroi(texto_t *txt)
+{
+  s_destroi(txt->nome_arquivo);
+  ls_destroi(txt->linhas);
+  free(txt);
 }
 
 // janela_t {{{1
@@ -135,15 +145,21 @@ void jan_cor(jan_cor_t cor)
 
 
 // aloca e inicializa uma janela para o texto txt
-janela_t *cria_jan(texto_t *txt)
+janela_t *jan_cria(texto_t *txt)
 {
   janela_t *jan = malloc(sizeof(*jan));
+  assert(jan != NULL);
   jan->txt = txt;
   jan->cursor_txt = (posicao_t){0,0};
   jan->inicio_txt = (posicao_t){0,0};
   jan->inicio_tela = (posicao_t){1,1};
   jan->tamanho = (tamanho_t){tela_nlin(), tela_ncol()};
   return jan;
+}
+
+void jan_destroi(janela_t *jan)
+{
+  free(jan);
 }
 
 // desenho do texto na janela
@@ -658,6 +674,26 @@ typedef struct {
   bool termina;  // true se deve encerrar o programa
 } editor_t;
 
+editor_t *ed_cria()
+{
+  editor_t *ed = malloc(sizeof(*ed));
+  assert(ed != NULL);
+  ed->txt = texto_cria(s_("exemplo.txt"));
+  ed->jan = jan_cria(ed->txt);
+  ed->modo = normal;
+  ed->termina = false;
+  ed->selecao = NULL;
+  return ed;
+}
+
+void ed_destroi(editor_t *ed)
+{
+  jan_destroi(ed->jan);
+  texto_destroi(ed->txt);
+  if(ed->selecao != NULL) ls_destroi(ed->selecao);
+  free(ed);
+}
+
 // retorna a janela que está selecionada para edição
 janela_t *ed_janela_corrente(editor_t *ed)
 {
@@ -861,18 +897,14 @@ void ed_desenha_tela(editor_t *ed)
 int main()
 {
   tela_cria();
-  editor_t ed;
-  ed.jan = cria_jan(cria_texto(s_("exemplo.txt")));
-  ed.modo = normal;
-  ed.termina = false;
-  ed.selecao = NULL;  /* porque não foi feita uma função de inicialização? */
+  editor_t *ed = ed_cria();
 
-  while (!ed.termina) {
-    ed_processa_tecla(&ed);
-    ed_desenha_tela(&ed);
+  while (!ed->termina) {
+    ed_processa_tecla(ed);
+    ed_desenha_tela(ed);
   }
 
-  // destruir ed
+  ed_destroi(ed);
   tela_destroi();
 }
 // vim: foldmethod=marker shiftwidth=2
