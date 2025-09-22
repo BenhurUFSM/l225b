@@ -65,6 +65,7 @@ Os assuntos vistos em aula serão listados aqui.
 |   11 |  10set | [percursos em árvores](Assuntos/arvores.md)
 |   12 |  15set | [árvores binárias de busca](Assuntos/arvores.md), [árvores AVL (inserção)](Assuntos/avl.md)
 |   13 |  17set | [árvores AVL (remoção)](Assuntos/avl.md)
+|   14 |  22set | [fila de prioridade (heap)](Assuntos/heap.md)
 
 ## Exercícios, trabalhos
 
