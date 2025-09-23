@@ -866,6 +866,7 @@ void ed_processa_tecla(editor_t *ed)
 {
   janela_t *jan = ed_janela_corrente(ed);
   tecla tec = tela_le_tecla();
+  if (tec == t_none) return;
   if (ed_processa_tecla_global(ed, tec)) return;
   switch (ed->modo) {
     case normal: ed_processa_tecla_normal(ed, tec); break;
