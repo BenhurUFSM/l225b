@@ -1,3 +1,14 @@
+# Trabalho 2, lista de strings
+
+Forma de entrega:
+
+- crie um diretório l2-t2-*apelido*. Coloque dentro:
+  - implementação da p2, em `lstr-v.c`
+  - implementação da p3, em `lstr-p.c`
+  - relatório de desempenho da p3
+  - implementação da p4, em `ed.c`
+- cria um tgz ou zip ou rar desse diretório, anexa a um email para o endereço da disciplina, com assunto "entrega de l2-t2-*apelido*".
+
 # t2 - parte I
 
 Suporte a caracteres unicode codificados em UTF8 nas strings.
