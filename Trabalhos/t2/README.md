@@ -184,3 +184,14 @@ Favor informar bugs encontrados.
     | pv | AXVC | AVXC |
     | pc | AVXC | AVCX |
     | pf | AVCX | AVCX |
+
+
+- como criar uma string com um caractere unicode (parte 4)
+   ```c
+   byte b[4];
+   str s = s_uni(b, codigo_do_caractere);
+   // a função s_uni está em ed.c
+   // a string s referencia os bytes em b. se precisar se s após a destruição
+   //   de b, faça uma cópia com s_copia.
+
+   ```
