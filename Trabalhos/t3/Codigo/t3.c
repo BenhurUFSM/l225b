@@ -7,20 +7,31 @@
 #include "lstr.h"
 #include "fila-prio.h"
 
+// que horas são?
+double agora()
+{
+  return time(0);
+}
+
+// chuta um número
 int aleat_entre(int ini, int fim) {
   return rand() % (fim - ini + 1) + ini;
 }
 
+// chuta um número entre 1 e 1000, com mais chances de ser pequeno que grande
 int chuta_pontos()
 {
-  return aleat_entre(1, 10) * aleat_entre(1,10) * aleat_entre(1, 10);
+  return aleat_entre(1, 10) * aleat_entre(1, 10) * aleat_entre(1, 10);
 }
 
+// dado para colocar na fila, com uma palavra e o número de pontos que ela vale
 typedef struct {
   str palavra;
   int pontos;
 } palpon_t;
 
+// função de comparação para prioridade entre palpons
+// considera que quem vale menos pontos tem maior prioridade
 int compara_palpon(void *p1, void *p2)
 {
   palpon_t *pp1 = p1;
@@ -28,11 +39,7 @@ int compara_palpon(void *p1, void *p2)
   return pp2->pontos - pp1->pontos;
 }
 
-double agora()
-{
-  return time(0);
-}
-
+// estrutura para manter o estado do jogo
 typedef struct {
   str conteudo_do_arquivo;
   Lstr palavras;
@@ -42,22 +49,21 @@ typedef struct {
   int pontos;
   bool terminou;
   double inicio;
-} jogo_t;
+} *Jogo;
 
-jogo_t *j_cria(str nome_do_arquivo)
+// aloca e inicializa o estado do jogo (mas não de uma partida)
+Jogo j_cria(str nome_do_arquivo)
 {
-  jogo_t *self = malloc(sizeof(*self));
+  Jogo self = malloc(sizeof(*self));
   assert(self != NULL);
   self->conteudo_do_arquivo = s_le_arquivo(nome_do_arquivo);
   self->palavras = s_separa(self->conteudo_do_arquivo, s_("\n"));
-  self->fila_de_palavras = fp_cria(sizeof(palpon_t), compara_palpon);
-  self->pontos = 0;
-  self->terminou = false;
-  self->inicio = agora();
+  self->fila_de_palavras = NULL;
   return self;
 }
 
-void j_destroi(jogo_t *self)
+// libera a memória ocupada pelo estado do jogo
+void j_destroi(Jogo self)
 {
   s_destroi(self->conteudo_do_arquivo);
   ls_destroi(self->palavras);
@@ -65,7 +71,8 @@ void j_destroi(jogo_t *self)
   free(self);
 }
 
-void j_escolhe_palavra(jogo_t *self)
+// pega a próxima palavra da fila (ou termina se não tem mais)
+void j_escolhe_palavra(Jogo self)
 {
   if (fp_tam(self->fila_de_palavras) == 0) {
     self->terminou = true;
@@ -74,31 +81,44 @@ void j_escolhe_palavra(jogo_t *self)
   }
 }
 
-void j_verifica_tempo(jogo_t *self)
+// vê se o jogo deve ser terminado por tempo
+void j_verifica_tempo(Jogo self)
 {
   if (agora() - self->inicio > 30) {
     self->terminou = true;
   }
 }
 
-void j_sorteia_palavra(jogo_t *self)
+// insere mais uma palavra na fila (aleatória)
+void j_sorteia_palavra(Jogo self)
 {
   int p = aleat_entre(0, ls_tam(self->palavras) - 1);
   palpon_t sorteada;
   ls_posiciona(self->palavras, p);
   sorteada.palavra = ls_item(self->palavras);
-  sorteada.pontos = chuta_pontos();
+  sorteada.pontos = chuta_pontos() * s_tam(sorteada.palavra);
   fp_insere(self->fila_de_palavras, &sorteada);
+}
+
+// inicia uma partida
+void j_inicia(Jogo self)
+{
+  fp_destroi(self->fila_de_palavras);
+  self->fila_de_palavras = fp_cria(sizeof(palpon_t), compara_palpon);
+  self->pontos = 0;
+  self->terminou = false;
+  self->inicio = agora();
+  for (int i = 0; i < 10; i++) {
+    j_sorteia_palavra(self);
+  }
 }
 
 int main()
 {
   srand(time(0));
-  jogo_t *jogo = j_cria(s_("palavras"));
+  Jogo jogo = j_cria(s_("palavras"));
+  j_inicia(jogo);
 
-  for (int i = 0; i < 10; i++) {
-    j_sorteia_palavra(jogo);
-  }
   j_escolhe_palavra(jogo);
   while (!jogo->terminou) {
     s_imprime(jogo->palavra_escolhida.palavra);
