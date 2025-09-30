@@ -75,7 +75,8 @@ Todos terão presença, quem não tem problema com o trabalho não precisa compa
 |     N |     prazo | descrição
 | ----: | --------: | :-----------
 |    T1 |     25ago | [implementação de strings](Trabalhos/t1)
-|    T2 |      2out | [suporte a unicode nas strings; lista de strings](Trabalhos/t2)
+|    T2 |      6out | [suporte a unicode nas strings; lista de strings](Trabalhos/t2)
+|    T3 |           | [fila de prioridade](Trabalhos/t3)
 
 ## Dados individuais
 
