@@ -1,7 +1,7 @@
 # t3 - fila de prioridade
 
 O código anexo implementa um jogo de digitação de palavras, usando uma fila de prioridade.
-Para compilá-lo, necessita lstr, str, tela do trabalho anterior.
+Para compilá-lo, necessita `lstr`, `str`, `tela` do trabalho anterior.
 
 O arquivo [fila-prio.h](Codigo/fila-prio.h) tem a interface de uma fila de prioridade.
 Nessa fila, os dados são colocados em qualquer ordem, e retirados por ordem de prioridade.
