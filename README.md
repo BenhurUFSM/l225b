@@ -66,9 +66,10 @@ Os assuntos vistos em aula serão listados aqui.
 |   12 |  15set | [árvores binárias de busca](Assuntos/arvores.md), [árvores AVL (inserção)](Assuntos/avl.md)
 |   13 |  17set | [árvores AVL (remoção)](Assuntos/avl.md)
 |   14 |  22set | [fila de prioridade (heap)](Assuntos/heap.md)
+|   15 |  24set | desenvolvimento dos trabalhos
+|   16 |  29set | desenvolvimento dos trabalhos
+|   17 |   1out | desenvolvimento dos trabalhos
 
-A aula do dia 24 de setembro será para resolver dúvidas sobre o trabalho.
-Todos terão presença, quem não tem problema com o trabalho não precisa comparecer (mas pode, claro).
 
 ## Exercícios, trabalhos
 
