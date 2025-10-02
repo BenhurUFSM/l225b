@@ -135,7 +135,7 @@ void j_sorteia_palavra(Jogo j)
 void j_inicia(Jogo j)
 {
   fp_destroi(j->fila_de_palavras);
-  j->fila_de_palavras = fp_cria(sizeof(palpon_t), compara_palpon);
+  j->fila_de_palavras = fp_cria(sizeof(palpon_t), &compara_palpon);
   j->pontos = 0;
   j->terminou = false;
   j->t_ini_partida = agora();

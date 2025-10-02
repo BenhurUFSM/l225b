@@ -7,13 +7,13 @@
 // definição da estrutura que implementa a fila
 struct fila_prio {
   int bytes_por_item;
-  compara_t comparador;
+  compara_t *comparador;
   int capacidade;
   int num_itens;
   void *dados;
 };
 
-FilaPrio fp_cria(int bytes_por_item, compara_t comparador)
+FilaPrio fp_cria(int bytes_por_item, compara_t *comparador)
 {
   FilaPrio self = malloc(sizeof(*self));
   assert(self != NULL);
@@ -38,8 +38,8 @@ int fp_tam(FilaPrio self)
   return self->num_itens;
 }
 
-// garante que tenha espaço para num_itens na fila
-// aumenta ou diminui o espaço alocado, para não faltar nem sobrar demais
+// Garante que tenha espaço para num_itens na fila.
+// Aumenta ou diminui o espaço alocado, para não faltar nem sobrar demais.
 static void fp__ajusta_capacidade(FilaPrio self)
 {
   if (self->capacidade < self->num_itens) {
@@ -56,7 +56,7 @@ static void fp__ajusta_capacidade(FilaPrio self)
   assert(self->dados != NULL);
 }
 
-// retorna ponteiro para o item na posição 'indice'
+// Retorna ponteiro para o item na posição 'indice'.
 static void *fp__ponteiro_para_item(FilaPrio self, int indice)
 {
   char *ptr = self->dados; // com ponteiro para char, dá para somar em bytes
@@ -64,8 +64,8 @@ static void *fp__ponteiro_para_item(FilaPrio self, int indice)
   return (void *)ptr;
 }
 
-// retorna um ponteiro para o item mais prioritário na fila,
-//   de acordo com a função de comparação
+// Retorna um ponteiro para o item mais prioritário na fila,
+//   de acordo com a função de comparação.
 static void *fp__acha_item_a_remover(FilaPrio self)
 {
   if (self->num_itens == 0) return NULL;

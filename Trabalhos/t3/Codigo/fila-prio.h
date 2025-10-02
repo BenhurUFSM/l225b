@@ -34,33 +34,34 @@
 // Seu trabalho é reimplementar a fila como um "heap", mantendo a
 //   interface (fila-prio.h não deve ser alterado).
 
-// tipo de dados para ponteiro para função de comparação
-// a função recebe ponteiros para dois dados, e retorna um inteiro,
-//   positivo se o primeiro item tem prioridade maior que o segundo,
-//   negativo se o primeiro item tem prioridade menor que o segundo
-//   e zero se os itens têm a mesma prioridade.
-typedef int (*compara_t)(void *item1, void *item2);
+// Tipo de dados para para função de comparação.
+// A função recebe ponteiros para dois dados, e retorna um inteiro
+//   com o resultado da comparação, que deve ser:
+//   - positivo se o primeiro item tem prioridade maior que o segundo,
+//   - negativo se o primeiro item tem prioridade menor que o segundo,
+//   - zero se os itens têm a mesma prioridade.
+typedef int compara_t(void *item1, void *item2);
 
 // tipo de dados da fila, a ser declarado no .c
 typedef struct fila_prio *FilaPrio;
 
 
-// aloca e retorna uma nova fila, vazia.
-// os dados a serem colocados na fila terão o tamanho "bytes_por_item",
+// Aloca e retorna uma nova fila, vazia.
+// Os dados a serem colocados na fila terão o tamanho "bytes_por_item",
 //   e podem ser comparados pela função apontada por "comparador".
-FilaPrio fp_cria(int bytes_por_item, compara_t comparador);
+FilaPrio fp_cria(int bytes_por_item, compara_t *comparador);
 
-// libera a memória ocupada pela fila
+// Libera a memória ocupada pela fila.
 void fp_destroi(FilaPrio self);
 
-// retorna o número de itens atualmente na fila
+// Retorna o número de itens atualmente na fila.
 int fp_tam(FilaPrio self);
 
-// insere o item apontado por "dado" na fila "self"
+// Insere o item apontado por "dado" na fila "self".
 void fp_insere(FilaPrio self, void *dado);
 
-// remove o próximo item da fila, copiando seu conteúdo para a 
-//   região apontada por "dado"
+// Remove o próximo item da fila, copiando seu conteúdo para a 
+//   região apontada por "dado".
 void fp_remove(FilaPrio self, void *dado);
 
 #endif  // _FILA_PRIO_H_
