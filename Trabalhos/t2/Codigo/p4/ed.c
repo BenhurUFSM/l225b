@@ -283,11 +283,13 @@ void jan_desenha(janela_t *jan, modo_t modo)
               jan->inicio_tela.col + (jan->cursor_txt.col - jan->inicio_txt.col) + 6);
 }
 
-// retorna a strinm na linha onde está o cursor
+// retorna a string na linha onde está o cursor
 str jan_linha_corrente(janela_t *jan)
 {
-  ls_posiciona(jan->txt->linhas, jan->cursor_txt.lin);
-  return ls_item(jan->txt->linhas);
+  Lstr linhas = jan->txt->linhas;
+  if (ls_tam(linhas) == 0) ls_insere_antes(linhas, s_copia(s_("")));
+  ls_posiciona(linhas, jan->cursor_txt.lin);
+  return ls_item(linhas);
 }
 
 // move o cursor uma coluna à esquerda
