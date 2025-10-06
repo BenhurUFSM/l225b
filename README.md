@@ -69,6 +69,7 @@ Os assuntos vistos em aula serão listados aqui.
 |   15 |  24set | desenvolvimento dos trabalhos
 |   16 |  29set | desenvolvimento dos trabalhos
 |   17 |   1out | desenvolvimento dos trabalhos
+|   18 |   6out | [grafos](Assuntos/grafos.md)
 
 
 ## Exercícios, trabalhos
