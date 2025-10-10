@@ -1,0 +1,1 @@
+gcc -o bits_tst bits_tst.c bits.c tela.c utf8.c
