@@ -78,7 +78,7 @@ Os assuntos vistos em aula serão listados aqui.
 | ----: | --------: | :-----------
 |    T1 |     25ago | [implementação de strings](Trabalhos/t1)
 |    T2 |      6out | [suporte a unicode nas strings; lista de strings](Trabalhos/t2)
-|    T3 |           | [fila de prioridade](Trabalhos/t3)
+|    T3 |     15out | [fila de prioridade](Trabalhos/t3)
 
 ## Dados individuais
 
