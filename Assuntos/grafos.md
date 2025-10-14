@@ -278,3 +278,130 @@ A atribuição pode ser implementada com código semelhante ao acima (até antes
 A decisão sobre o que fazer pode ser tomada analisando o valor de `dado` e o valor a atribuir, de acordo com as situações acima.
 
 Uma implementação equivalente poderia ser feita armazenando por coluna em vez de linha.
+
+
+### Detecção de ciclos
+
+A deteção de ciclos em um grafo não direcionado é mais simples que a detecção em um grafo direcionado.
+Em um grafo não direcionado, pode-se fazer um percurso no grafo, e se esse percurso levar a um nó que já foi visitado,
+é sinal que o grafo tem um ciclo, porque se existem mais de um caminho para se chegar a um nó do grafo quer dizer que existe um ciclo envolvendo esses dois caminhos.
+
+No caso de um grafo direcionado, o fato de se ter mais de um caminho para atingir um nó não implica na existência de um ciclo, porque pode não haver um caminho de volta, necessário para a existência do ciclo.
+
+Para detectar se um grafo não direcionado é acíclico, o algoritmo é simples: percorre-se o grafo, e se durante o percurso chega-se a um nó já marcado, é porque o grafo contém um ciclo e não é acíclico.
+
+O percurso em profundidade visto anteriormente poderia ser alterado para detectar ciclos assim.
+Em um grafo implementado em uma matriz de adjacências booleana:
+```c
+bool aciclico(int n_nos, bool grafo[n_nos][n_nos])
+{
+  bool marcado[n_nos];
+  for (int no = 0; no < n_nos; no++) marcado[no] = false;  // todos desmarcados
+  for (int no = 0; no < n_nos; no++) {
+    if (marcado[no]) continue;
+    if (acha_ciclo(n_nos, grafo, marcado, no)) return false;
+  }
+  return true;
+}
+
+bool acha_ciclo(int n_nos, bool grafo[n_nos][n_nos], 
+                bool marcado[n_nos], int no)
+{
+  if (marcado[no]) return true;
+  marcado[no] = true;
+  for (int adj = 0; adj < n_nos; adj++) {
+    if (grafo[no][adj]) {
+      if (acha_ciclo(n_nos, grafo, marcado, adj)) return true;
+    }
+  }
+  return false;
+}
+```
+
+Para o caso de grafos direcionados, a detecção é um pouco mais complexa.
+O ciclo é detectado se durante o percurso se chega a um nó que faz parte do percurso atual, e não a qualquer nó que já tenha sido visitado.
+Precisamos distinguir entre 3 estados de cada nó: ainda não visitado, em visita (ainda não se terminou de visitar os seus adjacentes) e já visitados (após o percurso de todos seus adjacentes).
+Só se detecta um ciclo quando se chega em um nó que está "em visita", porque quer dizer que se chegou de novo a esse nó durante a visita a seus adjacentes.
+Quando se chega a um nó já visitado, quer dizer simplesmente que tem mais de um caminho para se chegar ao mesmo nó, não que haja um ciclo.
+O código pode ser então:
+```c
+typedef enum { nao_visitado, em_visita, ja_visitado} marca_t;
+bool aciclico(int n_nos, bool grafo[n_nos][n_nos])
+{
+  marca_t marca[n_nos];
+  for (int no = 0; no < n_nos; no++) marca[no] = nao_visitado;  // todos marcados como não visitados
+  for (int no = 0; no < n_nos; no++) {
+    if (marca[no] == nao_visitado) {
+      if (acha_ciclo(n_nos, grafo, marca, no)) return false;
+    }
+  }
+  return true;
+}
+
+bool acha_ciclo(int n_nos, bool grafo[n_nos][n_nos], 
+                marca_t marca[n_nos], int no)
+{
+  if (marca[no] == em_visita) return true;
+  if (marca[no] == ja_visitado) return false;
+  marca[no] = em_visita;
+  for (int adj = 0; adj < n_nos; adj++) {
+    if (grafo[no][adj]) {
+      if (acha_ciclo(n_nos, grafo, marca, adj)) return true;
+    }
+  }
+  marca[no] = ja_visitado;
+  return false;
+}
+```
+As marcas são também chamadas de coloração (branco, cinza e preto).
+Esse mesmo código pode ser usado em grafos não direcionados.
+
+#### Detecção de ciclos pelo grau dos nós
+
+Outra forma de detecção de ciclos é baseada na idéia de que um nó que pertence a um ciclo obrigatoriamente tem pelo menos uma aresta de chegada e uma de saída (o grau de entrada e o grau de saída de um nó pertencente a um ciclo não podem ser 0).
+A idéia é remover do grafo todo nó que tenha grau de entrada (ou saída) 0.
+Após remover um desses nós, as arestas que partem (ou chegam) dele são removidas, diminuindo o grau de entrada (ou saída) dos nós adjacentes.
+Se não se conseguir remover todos os nós, é porque o grafo tem um ciclo.
+
+Abaixo tem uma implementação dessa idéia, com grafo implementado por matriz de adjacências, considerando o grau de entrada dos nós.
+A implementação considerando grau de saída seria muito semelhante.
+Em vez de destruir o grafo retirando nós, essa implementação mantém um vetor com o grau de entrada de cada nó, que vão sendo alterados conforme cada nó com grau de entrada zero é analisado.
+Os nós que já foram identificados com grau de entrada 0 e ainda não foram analisados são mantidos em uma fila.
+```c
+bool aciclico_por_grau_de_entrada(int n_nos, bool grafo[n_nos][n_nos])
+{
+  // inicializa um vetor com o grau de entrada dos nós
+  int ge[n_nos];
+  for (int no = 0; no < n_nos; no++) {
+    ge[no] = 0;
+    // incrementa o GE do nó para cada aresta que chega nele
+    for (int no2 = 0; no2 < n_nos; no2++) {
+      if (grafo[no2][no]) ge[no]++;
+    }
+  }
+  // inicializa uma fila com todos os nós que têm GE 0 (isso poderia ser feito no final do segundo for acima)
+  fila f = fila_cria();
+  for (int no  = 0; no < n_nos; no++) {
+    if (ge[no] == 0) {
+      fila_insere(f, no);
+    }
+  }
+  int analisados = 0;  // conta o número de nós analisados (que têm GE 0)
+  while (!fila_vazia(f)) {
+    int no = fila_remove(f);
+    // decrementa o GE de cada nó destino de uma aresta que parte do nó analisado
+    // insere na fila se o GE ficou 0
+    for (int no2 = 0; no2 < n_nos; no2++) {
+      if (grafo[no][no2]) {
+        ge[no2]--;
+        if (ge[no2] == 0) fila_insere(f, no2);
+      }
+    }
+    analisados++;
+  }
+  fila_destroi(f);
+  // se todos os nós foram analisados, o grafo é acíclico.
+  return analisados == n_nos;
+}
+```
+
