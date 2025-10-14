@@ -100,7 +100,6 @@ percurso_largura(g):
                   insere(f, o)
 ```
 
-<a id="implementacao"></a>
 ### Implementação de grafos
 
 Tem duas ideias principais de se implementar grafos, com listas de adjacências e com matriz de adjacências.
