@@ -70,8 +70,8 @@ Os assuntos vistos em aula serão listados aqui.
 |   16 |  29set | desenvolvimento dos trabalhos
 |   17 |   1out | desenvolvimento dos trabalhos
 |   18 |   6out | [grafos](Assuntos/grafos.md)
-|   19 |   8out | [grafos, implementação](Assuntos/grafos.md#implementacao)
-|   20 |  13out | [grafos, detecção de ciclos](Assuntos/grafos.md#ciclos)
+|   19 |   8out | [grafos, implementação](Assuntos/grafos.md#implementação-de-grafos)
+|   20 |  13out | [grafos, detecção de ciclos](Assuntos/grafos.md#detecção-de-ciclos)
 
 
 ## Exercícios, trabalhos
