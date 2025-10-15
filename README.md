@@ -70,6 +70,8 @@ Os assuntos vistos em aula serão listados aqui.
 |   16 |  29set | desenvolvimento dos trabalhos
 |   17 |   1out | desenvolvimento dos trabalhos
 |   18 |   6out | [grafos](Assuntos/grafos.md)
+|   19 |   8out | [grafos, implementação](Assuntos/grafos.md#implementação-de-grafos)
+|   20 |  13out | [grafos, detecção de ciclos](Assuntos/grafos.md#detecção-de-ciclos)
 
 
 ## Exercícios, trabalhos
@@ -78,7 +80,7 @@ Os assuntos vistos em aula serão listados aqui.
 | ----: | --------: | :-----------
 |    T1 |     25ago | [implementação de strings](Trabalhos/t1)
 |    T2 |      6out | [suporte a unicode nas strings; lista de strings](Trabalhos/t2)
-|    T3 |           | [fila de prioridade](Trabalhos/t3)
+|    T3 |     15out | [fila de prioridade](Trabalhos/t3)
 
 ## Dados individuais
 
