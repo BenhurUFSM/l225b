@@ -72,6 +72,7 @@ Os assuntos vistos em aula serão listados aqui.
 |   18 |   6out | [grafos](Assuntos/grafos.md)
 |   19 |   8out | [grafos, implementação](Assuntos/grafos.md#implementação-de-grafos)
 |   20 |  13out | [grafos, detecção de ciclos](Assuntos/grafos.md#detecção-de-ciclos)
+|   21 |  15out | [grafos, ordem topológica](Assuntos/grafos.md#ordem-topológica)
 
 
 ## Exercícios, trabalhos
