@@ -49,23 +49,23 @@ typedef struct rede *Rede;
 //   seguintes contêm os de saída, os demais contêm os intermediários.
 // Contém também uma fila, com os números dos nós na ordem em que devem ser
 //   calculados.
-struct rede {
-  Grafo grafo;
-  Fila ordem;
-};
+// struct rede {
+//   Grafo grafo;
+//   Fila ordem;
+// };
 
 // Um neurônio tem uma identificação e um valor.
 typedef struct {
   int id;
   float valor;
-} Neuronio;
+} neuronio;
 
 // Uma sinapse contém um peso usado no cálculo do valor do neurônio de chegada,
 //   e pode ser desabilitada
 typedef struct {
   float peso;
   bool habilitada;
-} Sinapse;
+} sinapse;
 
 
 // cria uma rede neural a partir de um arquivo
@@ -77,9 +77,39 @@ Rede rede_cria_vazia();
 // libera a memória ocupada por uma rede neural
 void rede_destroi(Rede self);
 
+// retorna o número de neurônios na rede
+int rede_nneuronios(Rede self);
+
+// insere um novo neurônio na rede, retorno sua posição
+int rede_insere_neuronio(Rede self, neuronio neuro);
+
+// retorna ponteiro para o neurônio na posição pos
+neuronio *rede_neuronio(Rede self, int pos);
+
+// remove o neurônio na posição pos
+void rede_remove_neuronio(Rede self, int pos);
+
+// retorna ponteiro para a sinapse entre os neurônios nas posições pos_org e pos_dest
+sinapse *rede_sinapse(Rede self, int pos_org, int pos_dest);
+
+// insere a sinapse sina entre os neurônios em pos_origem e pos_destino
+void rede_insere_sinapse(Rede self, int pos_origem, int pos_destino, sinapse sina);
+
+// remove a sinapse entre os neurônios em pos_origem e pos_destino
+void rede_remove_sinapse(Rede self, int pos_origem, int pos_destino);
+
+// recalcula a ordem topológica de cálculo dos nós
+void rede_calcula_ordem(Rede rede);
+
 // recalcula os valores dos nós da rede, à partir dos valores fornecidos
 //   para as entradas; copia os valores dos nós de saída para o vetor saidas
 void rede_calcula(Rede rede, float entradas[N_ENTRADAS], float saidas[N_SAIDAS]);
+
+// inicia um percurso pelas sinapses que partem do neurônio em pos_org
+void rede_sinapses_que_partem(Rede self, int pos_org);
+
+// retorna a próxima sinapse do percurso
+sinapse *rede_proxima_sinapse(Rede self, int *pos_vizinho);
 
 // funções que devem ser implementadas para calcular a pontuação de uma rede
 // joga uma partida do jogo e retorna a pontuação

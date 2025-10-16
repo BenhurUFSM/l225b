@@ -1,4 +1,3 @@
-#include "grafo.h"
 #include "rede.h"
 
 #include <assert.h>
@@ -14,6 +13,7 @@
 #define MAX_ESPECIES N_INDIVIDUOS // número máximo de espécies em uma geração
 #define MAX_IND_ESP (N_INDIVIDUOS / 1) // número máximo de indivíduos em uma espécie
 #define MAX_PASSOS 2000 // número máximo de passos em uma simulação
+#define N_PARTIDAS 3 // número de partidas que cada indivíduo joga
 
 // probabilidades na mutação
 #define PROB_CRIAR_NEURONIO 50//2
@@ -52,47 +52,39 @@ void individuo_destroi(Individuo *self)
 
 int individuo_nneuronios(Individuo *self)
 {
-  return grafo_nnos(self->rede->grafo);
+  return rede_nneuronios(self->rede);
 }
-int individuo_insere_neuronio(Individuo *self, Neuronio neuronio)
+int individuo_insere_neuronio(Individuo *self, neuronio neuronio)
 {
-  return grafo_insere_no(self->rede->grafo, &neuronio);
+  return rede_insere_neuronio(self->rede, neuronio);
 }
 void individuo_remove_neuronio(Individuo *self, int pos)
 {
-  return grafo_remove_no(self->rede->grafo, pos);
+  rede_remove_neuronio(self->rede, pos);
 }
-void individuo_neuronio(Individuo *self, int pos, Neuronio *pneuro)
+neuronio *individuo_neuronio(Individuo *self, int pos)
 {
-  grafo_valor_no(self->rede->grafo, pos, pneuro);
+  return rede_neuronio(self->rede, pos);
 }
-void individuo_altera_neuronio(Individuo *self, int pos, Neuronio neuronio)
+sinapse *individuo_sinapse(Individuo *self, int pos_org, int pos_dest)
 {
-  grafo_altera_valor_no(self->rede->grafo, pos, &neuronio);
-}
-bool individuo_sinapse(Individuo *self, int pos_org, int pos_dest, Sinapse *psina)
-{
-  return grafo_valor_aresta(self->rede->grafo, pos_org, pos_dest, psina);
-}
-void individuo_altera_sinapse(Individuo *self, int pos_org, int pos_dest, Sinapse *psina)
-{
-  grafo_altera_valor_aresta(self->rede->grafo, pos_org, pos_dest, psina);
+  return rede_sinapse(self->rede, pos_org, pos_dest);
 }
 void individuo_remove_sinapse(Individuo *self, int pos_org, int pos_dest)
 {
-  grafo_altera_valor_aresta(self->rede->grafo, pos_org, pos_dest, NULL);
+  rede_remove_sinapse(self->rede, pos_org, pos_dest);
 }
 void individuo_sinapses_que_partem(Individuo *self, int pos_org)
 {
-  grafo_arestas_que_partem(self->rede->grafo, pos_org);
+  rede_sinapses_que_partem(self->rede, pos_org);
 }
-void individuo_sinapses_que_chegam(Individuo *self, int pos_dest)
+sinapse *individuo_proxima_sinapse(Individuo *self, int *pos_vizinho)
 {
-  grafo_arestas_que_chegam(self->rede->grafo, pos_dest);
+  return rede_proxima_sinapse(self->rede, pos_vizinho);
 }
-bool individuo_proxima_sinapse(Individuo *self, int *pos_vizinho, Sinapse *psina)
+void individuo_insere_sinapse(Individuo *self, int pos_origem, int pos_destino, sinapse sina)
 {
-  return grafo_proxima_aresta(self->rede->grafo, pos_vizinho, psina);
+  rede_insere_sinapse(self->rede, pos_origem, pos_destino, sina);
 }
 
 // grava uma indivíduo em um arquivo, em formato que pode ser lido como Rede
@@ -103,27 +95,21 @@ void individuo_grava(Individuo *self, char *nome)
   int nneuronios = individuo_nneuronios(self);
   fprintf(arq, "%d %d %d\n", nneuronios, N_ENTRADAS, N_SAIDAS);
   for (int pos = 0; pos < nneuronios; pos++) {
-    Neuronio neuronio;
-    individuo_neuronio(self, pos, &neuronio);
-    fprintf(arq, "%d\n", neuronio.id);
+    neuronio *neuro;
+    neuro = individuo_neuronio(self, pos);
+    fprintf(arq, "%d\n", neuro->id);
   }
   for (int pos_origem = 0; pos_origem < nneuronios; pos_origem++) {
     individuo_sinapses_que_partem(self, pos_origem);
     int pos_destino;
-    Sinapse sinapse;
-    while (individuo_proxima_sinapse(self, &pos_destino, &sinapse)) {
-      fprintf(arq, "%d %d %f %d\n", pos_origem, pos_destino, sinapse.peso, sinapse.habilitada ? 1 : 0);
+    sinapse *sina;
+    while ((sina = individuo_proxima_sinapse(self, &pos_destino)) != NULL) {
+      fprintf(arq, "%d %d %f %d\n", pos_origem, pos_destino, sina->peso, sina->habilitada ? 1 : 0);
     }
   }
   fprintf(arq, "-1 -1 -1 -1\n");
   fprintf(arq, "%d\n", self->geracao);
   fprintf(arq, "%f\n", self->pontuacao);
-  int no;
-  fila_inicia_percurso(self->rede->ordem, 0);
-  while (fila_proximo(self->rede->ordem, &no)) {
-    fprintf(arq, " %d", no);
-  }
-  fprintf(arq, "\n");
   fclose(arq);
 }
 
@@ -293,39 +279,38 @@ static int pos_neuronio_intermediario(Individuo *self) {
 
 // funções auxiliares para busca por id
 
-static bool individuo_neuronio_com_id(Individuo *self, int neuro_id, Neuronio *pneuro)
+static neuronio *individuo_neuronio_com_id(Individuo *self, int neuro_id)
 {
-  Neuronio neuro;
+  neuronio *neuro;
   int nneuronios = individuo_nneuronios(self);
   for (int pos = 0; pos < nneuronios; pos++) {
-    individuo_neuronio(self, pos, &neuro);
-    if (neuro.id == neuro_id) {
-      if (pneuro != NULL) *pneuro = neuro;
-      return true;
+    neuro = individuo_neuronio(self, pos);
+    if (neuro->id == neuro_id) {
+      return neuro;
     }
   }
-  return false;
+  return NULL;
 }
 
-static bool individuo_sinapse_com_ids(Individuo *self, int id_neuro_origem, int id_neuro_destino, Sinapse *psina)
+static sinapse *individuo_sinapse_com_ids(Individuo *self, int id_neuro_origem, int id_neuro_destino)
 {
   int pos_origem = -1, pos_destino = -1;
   int nneuronios = individuo_nneuronios(self);
   int pos;
-  Neuronio neuro;
+  neuronio *neuro;
   for (pos = 0; pos < nneuronios; pos++) {
-    individuo_neuronio(self, pos, &neuro);
-    if (neuro.id == id_neuro_origem) {
+    neuro = individuo_neuronio(self, pos);
+    if (neuro->id == id_neuro_origem) {
       pos_origem = pos;
       if (pos_destino != -1) break;
     }
-    else if (neuro.id == id_neuro_destino) {
+    else if (neuro->id == id_neuro_destino) {
       pos_destino = pos;
       if (pos_origem != -1) break;
     }
   }
-  if (pos == nneuronios) return false;
-  return individuo_sinapse(self, pos_origem, pos_destino, psina);
+  if (pos == nneuronios) return NULL;
+  return individuo_sinapse(self, pos_origem, pos_destino);
 }
 
 
@@ -333,9 +318,9 @@ static bool individuo_sinapse_com_ids(Individuo *self, int id_neuro_origem, int 
 
 // produz uma nova sinapse misturando outras 2
 // escolhe aleatoriamente de o peso vem de um ou outro antepassado
-Sinapse mistura_sinapses(Sinapse s1, Sinapse s2)
+sinapse mistura_sinapses(sinapse s1, sinapse s2)
 {
-  Sinapse mistura = {
+  sinapse mistura = {
     .peso = caracoroa() ? s1.peso : s2.peso,
     .habilitada = true
   };
@@ -367,32 +352,31 @@ Individuo *mistura_individuos(Individuo *ind1, Individuo *ind2)
   filhote->geracao = max(dominante->geracao, recessivo->geracao) + 1;
 
   // mistura os neurônios
-  int nnos = grafo_nnos(dominante->rede->grafo);
+  int nnos = individuo_nneuronios(dominante);
   for (int no = 0; no < nnos; no++) {
-    Neuronio neuro;
-    individuo_neuronio(dominante, no, &neuro);
-    grafo_insere_no(filhote->rede->grafo, &neuro);
+    individuo_insere_neuronio(filhote, *individuo_neuronio(dominante, no));
   }
 
   // mistura as sinapses
   for (int no_origem = 0; no_origem < nnos; no_origem++) {
     int no_destino;
-    Sinapse sinadom, sinarec, sinafilho;
-    Neuronio neuroorg, neurodest;
-    individuo_neuronio(dominante, no_origem, &neuroorg);
+    sinapse *sinadom, *sinarec, sinafilho;
+    neuronio *neuroorg, *neurodest;
+    neuroorg = individuo_neuronio(dominante, no_origem);
     individuo_sinapses_que_partem(dominante, no_origem);
-    while (individuo_proxima_sinapse(dominante, &no_destino, &sinadom)) {
-      individuo_neuronio(dominante, no_destino, &neurodest);
-      if (individuo_sinapse_com_ids(recessivo, neuroorg.id, neurodest.id, &sinarec)) {
-        sinafilho = mistura_sinapses(sinadom, sinarec);
+    while ((sinadom = individuo_proxima_sinapse(dominante, &no_destino)) != NULL) {
+      neurodest = individuo_neuronio(dominante, no_destino);
+      sinarec = individuo_sinapse_com_ids(recessivo, neuroorg->id, neurodest->id);
+      if (sinarec != NULL) {
+        sinafilho = mistura_sinapses(*sinadom, *sinarec);
       } else {
-        sinafilho = sinadom;
+        sinafilho = *sinadom;
       }
-      individuo_altera_sinapse(filhote, no_origem, no_destino, &sinafilho);
+      individuo_insere_sinapse(filhote, no_origem, no_destino, sinafilho);
     }
   }
 
-  filhote->rede->ordem = grafo_ordem_topologica(filhote->rede->grafo);
+  rede_calcula_ordem(filhote->rede);
   return filhote;
 }
 
@@ -404,20 +388,16 @@ bool mutacao_cria_sinapse(Individuo *self)
 {
   int pos_origem = pos_neuronio_nao_saida(self);
   int pos_destino = pos_neuronio_nao_entrada(self);
-  Sinapse sina;
-  if (individuo_sinapse(self, pos_origem, pos_destino, &sina)) {
+  sinapse *sina = individuo_sinapse(self, pos_origem, pos_destino);
+  if (sina != NULL) {
     // já existe a sinapse -- ativa se estiver inativa
-    if (!sina.habilitada) {
-      sina.habilitada = true;
-      individuo_altera_sinapse(self, pos_origem, pos_destino, &sina);
+    if (!sina->habilitada) {
+      sina->habilitada = true;
     }
   } else {
-    // sinapse não existe - cria, mas descria se formar ciclo
-    sina.peso = valor_aleatorio();
-    sina.habilitada = true;
-    individuo_altera_sinapse(self, pos_origem, pos_destino, &sina);
-    if (!grafo_tem_ciclo(self->rede->grafo)) return true;
-    individuo_remove_sinapse(self, pos_origem, pos_destino);
+    // sinapse não existe - cria (mas não vai ser inserida se formar ciclo)
+    sinapse nova = { .peso = valor_aleatorio(), .habilitada = true };
+    individuo_insere_sinapse(self, pos_origem, pos_destino, nova);
   }
   return false;
 }
@@ -430,7 +410,7 @@ void mutacao_remove_sinapse(Individuo *self)
   for (int tentativa = 0; tentativa < 50; tentativa++) {
     int pos_origem = pos_neuronio_nao_saida(self);
     int pos_destino = pos_neuronio_nao_entrada(self);
-    if (individuo_sinapse(self, pos_origem, pos_destino, NULL)) {
+    if (individuo_sinapse(self, pos_origem, pos_destino) != NULL) {
       individuo_remove_sinapse(self, pos_origem, pos_destino);
       return;
     }
@@ -446,28 +426,27 @@ bool mutacao_divide_sinapse(Individuo *self)
   for (int tentativa = 0; tentativa < 50; tentativa++) {
     int pos_origem = pos_neuronio_nao_saida(self);
     int pos_destino = pos_neuronio_nao_entrada(self);
-    Sinapse sinapse;
-    if (individuo_sinapse(self, pos_origem, pos_destino, &sinapse)) {
-      Neuronio neuro_origem, neuro_destino;
-      individuo_neuronio(self, pos_origem, &neuro_origem);
-      individuo_neuronio(self, pos_destino, &neuro_destino);
-      int id_do_meio = novo_id_neuronio(neuro_origem.id, neuro_destino.id);
-      if (individuo_neuronio_com_id(self, id_do_meio, NULL)) {
+    sinapse *sina = individuo_sinapse(self, pos_origem, pos_destino);
+    if (sina != NULL) {
+      neuronio *neuro_origem, *neuro_destino;
+      neuro_origem = individuo_neuronio(self, pos_origem);
+      neuro_destino = individuo_neuronio(self, pos_destino);
+      int id_do_meio = novo_id_neuronio(neuro_origem->id, neuro_destino->id);
+      if (individuo_neuronio_com_id(self, id_do_meio) != NULL) {
         // já tem essa divisão, desiste
         continue;
       }
       // desativa a sinapse original
-      if (sinapse.habilitada) {
-        sinapse.habilitada = false;
-        individuo_altera_sinapse(self, pos_origem, pos_destino, &sinapse);
+      if (sina->habilitada) {
+        sina->habilitada = false;
       }
       // insere uma sinapse, um neurônio e outra sinapse interligando os 2 neurônios
-      Neuronio neuro_meio = { .id = id_do_meio, .valor = 0 };
-      Sinapse sina1 = { .peso = 1, .habilitada = true };
-      Sinapse sina2 = { .peso = sinapse.peso, .habilitada = true };
+      neuronio neuro_meio = { .id = id_do_meio, .valor = 0 };
+      sinapse sina1 = { .peso = 1, .habilitada = true };
+      sinapse sina2 = { .peso = sina->peso, .habilitada = true };
       int pos_meio = individuo_insere_neuronio(self, neuro_meio);
-      individuo_altera_sinapse(self, pos_origem, pos_meio, &sina1);
-      individuo_altera_sinapse(self, pos_meio, pos_destino, &sina2);
+      individuo_insere_sinapse(self, pos_origem, pos_meio, sina1);
+      individuo_insere_sinapse(self, pos_meio, pos_destino, sina2);
       return true;
     }
   }
@@ -493,18 +472,15 @@ void mutacao_valor_sinapses(Individuo *self)
   int nneuronios = individuo_nneuronios(self);
   for (int pos_origem = 0; pos_origem < nneuronios; pos_origem++) {
     int pos_destino;
-    Sinapse sinapse;
+    sinapse *sina;
     individuo_sinapses_que_partem(self, pos_origem);
-    while (individuo_proxima_sinapse(self, &pos_destino, &sinapse)) {
+    while ((sina = individuo_proxima_sinapse(self, &pos_destino)) != NULL) {
       int aleat = aleatorio(100);
       if (aleat >= prob_absoluto) continue;
-      if (individuo_sinapse(self, pos_origem, pos_destino, &sinapse)) {
-        if (aleat < prob_relativo) {
-          sinapse.peso = altera_valor(sinapse.peso);
-        } else {
-          sinapse.peso = valor_aleatorio();
-        }
-        individuo_altera_sinapse(self, pos_origem, pos_destino, &sinapse);
+      if (aleat < prob_relativo) {
+        sina->peso = altera_valor(sina->peso);
+      } else {
+        sina->peso = valor_aleatorio();
       }
     }
   }
@@ -517,26 +493,24 @@ void mutacao_inverte_habilitacao_sinapse(Individuo *self)
   for (int tentativa = 0; tentativa < 50; tentativa++) {
     int pos_origem = pos_neuronio_nao_saida(self);
     int pos_destino = pos_neuronio_nao_entrada(self);
-    Sinapse sinapse;
-    if (individuo_sinapse(self, pos_origem, pos_destino, &sinapse)) {
-      if (sinapse.habilitada) {
-        // não desativa se for a única sinapse ativa saindo do neurônio
-        bool achou_vizinho = false;
-        int pos_vizinho;
-        Sinapse sina_vizinho;
-        individuo_sinapses_que_partem(self, pos_origem);
-        while (individuo_proxima_sinapse(self, &pos_vizinho, &sina_vizinho)) {
-          if (pos_vizinho != pos_destino && sina_vizinho.habilitada) {
-            achou_vizinho = true;
-            break;
-          }
+    sinapse *sina = individuo_sinapse(self, pos_origem, pos_destino);
+    if (sina == NULL) continue;
+    if (sina->habilitada) {
+      // não desativa se for a única sinapse ativa saindo do neurônio
+      bool achou_vizinho = false;
+      int pos_vizinho;
+      sinapse *sina_vizinho;
+      individuo_sinapses_que_partem(self, pos_origem);
+      while ((sina_vizinho = individuo_proxima_sinapse(self, &pos_vizinho)) != NULL) {
+        if (pos_vizinho != pos_destino && sina_vizinho->habilitada) {
+          achou_vizinho = true;
+          break;
         }
-        if (!achou_vizinho) break;
       }
-      sinapse.habilitada = !sinapse.habilitada;
-      individuo_altera_sinapse(self, pos_origem, pos_destino, &sinapse);
-      break;
+      if (!achou_vizinho) continue;
     }
+    sina->habilitada = !sina->habilitada;
+    break;
   }
 }
 
@@ -555,8 +529,7 @@ void realiza_mutacoes(Individuo *self)
     if (probabilidade(PROB_INV_HABILITACAO)) mutacao_inverte_habilitacao_sinapse(self);
   }
   if (mutacao_estrutural) {
-    if (self->rede->ordem != NULL) fila_destroi(self->rede->ordem);
-    self->rede->ordem = grafo_ordem_topologica(self->rede->grafo);
+    rede_calcula_ordem(self->rede);
   }
 }
 
@@ -570,18 +543,10 @@ Individuo *individuo_cria_aleatorio()
   self->geracao = 0;
   int nneuronios = N_ENTRADAS + N_SAIDAS;
   for (int pos = 0; pos < nneuronios; pos++) {
-    Neuronio neuronio = { .id = pos, .valor = 0 };
+    neuronio neuronio = { .id = pos, .valor = 0 };
     individuo_insere_neuronio(self, neuronio);
   }
-  /*
-  for (int pos_origem = 0; pos_origem < N_ENTRADAS; pos_origem++) {
-    for (int pos_destino = N_ENTRADAS; pos_destino < N_ENTRADAS + N_SAIDAS; pos_destino++) {
-      Sinapse sinapse = { .peso = valor_aleatorio(), .habilitada = true };
-      individuo_altera_sinapse(self, pos_origem, pos_destino, &sinapse);
-    }
-  }
-*/
-  self->rede->ordem = grafo_ordem_topologica(self->rede->grafo);
+  rede_calcula_ordem(self->rede);
   return self;
 }
 
@@ -655,15 +620,16 @@ float compatibilidade(Individuo *a, Individuo *b)
   int npesos = 0;
   int ndisjuntos = 0;
   int pos_origem, pos_destino;
-  Neuronio neuro_origem, neuro_destino;
-  Sinapse sinapse_a, sinapse_b;
+  neuronio *neuro_origem, *neuro_destino;
+  sinapse *sinapse_a, *sinapse_b;
   for (pos_origem = 0; pos_origem < nneuronios; pos_origem++) {
-    individuo_neuronio(a, pos_origem, &neuro_origem);
+    neuro_origem = individuo_neuronio(a, pos_origem);
     individuo_sinapses_que_partem(a, pos_origem);
-    while (individuo_proxima_sinapse(a, &pos_destino, &sinapse_a)) {
-      individuo_neuronio(a, pos_destino, &neuro_destino);
-      if (individuo_sinapse_com_ids(b, neuro_origem.id, neuro_destino.id, &sinapse_b)) {
-        soma_diffs_pesos += fabsf(sinapse_a.peso - sinapse_b.peso);
+    while ((sinapse_a = individuo_proxima_sinapse(a, &pos_destino)) != NULL) {
+      neuro_destino = individuo_neuronio(a, pos_destino);
+      sinapse_b = individuo_sinapse_com_ids(b, neuro_origem->id, neuro_destino->id);
+      if (sinapse_b != NULL) {
+        soma_diffs_pesos += fabsf(sinapse_a->peso - sinapse_b->peso);
         npesos++;
       } else {
         ndisjuntos++;
@@ -844,23 +810,13 @@ void pontua_geracao(Geracao *geracao)
   for (int i = 0; i < N_INDIVIDUOS; i++) {
     srand(0);
     Individuo *jogador = geracao->individuos[i];
-    int pmax = 0;
-    int pmin = 10000;
-    int psom = 0;
-    int p[5];
-    for (int ip = 0; ip < 5; ip++) {
-      p[ip] = joga_sem_tela(jogador->rede);
-      psom += p[ip];
-      if (p[ip] > pmax) pmax = p[ip];
-      if (p[ip] < pmin) pmin = p[ip];
+    float soma = 0;
+    for (int ip = 0; ip < N_PARTIDAS; ip++) {
+      soma += joga_sem_tela(jogador->rede);
     }
-    printf("[%d %d %d]", i, pmin, pmax);
-    fflush(stdout);
-    jogador->pontuacao = psom;
+    jogador->pontuacao = soma / N_PARTIDAS;
     jogador->pontuacao_original = jogador->pontuacao;
-    //fprintf(stderr, "I%03d %f\n", i, jogador->pontuacao);
   }
-  printf("\n");
 }
 
 // calcula os valores globais da especie, a partir das pontuacoes de seus individuos
@@ -870,11 +826,9 @@ void pontua_geracao(Geracao *geracao)
 float especie_totaliza(Especie *especie, int id_geracao)
 {
   // ordena indivíduos por pontuação
-  //fprintf(stderr, "\ntotaliza esp%d ger_cria%d ger_mel%d ger_at%d\n", especie->id, especie->geracao_criacao, especie->geracao_ultima_melhora, id_geracao);
   qsort(especie->individuos, especie->n_individuos, sizeof(Rede), compara_individuos_por_pontuacao);
   // vê se a espécie evoluiu
   if (especie->individuos[0]->pontuacao > especie->pontuacao_maxima) {
-    //printf("especie %d evoluiu ind%d %.0f>%.0f\n", especie->id, especie->individuos[0]->id, especie->pontuacao_maxima, especie->individuos[0]->pontuacao);
     especie->pontuacao_maxima = especie->individuos[0]->pontuacao;
     especie->geracao_ultima_melhora = id_geracao;
   }
@@ -894,7 +848,6 @@ float especie_totaliza(Especie *especie, int id_geracao)
     // (não tenho compreensão total sobre o motivo, mas faz parte do NEAT)
     individuo->pontuacao /= especie->n_individuos;
     pontuacao_total += individuo->pontuacao;
-    //fprintf(stderr, "i%dp%.1f>%.1f ", individuo->id, individuo->pontuacao_original, individuo->pontuacao);
   }
   especie->pontuacao_media = pontuacao_total / especie->n_individuos;
   return pontuacao_total;
@@ -908,18 +861,15 @@ int especie_calcula_descendentes(Especie *especie, float pontuacao_media)
   int total_descendentes_int = 0;
   // distribui descendentes entre os indivíduos
   // faz um baile entre int e float para dar números inteiros de descendentes,
-  //   mas não perder muitos que a espécie tem direito por arredendamentos.
+  //   mas não perder muitos que a espécie tem direito por arredondamentos.
   // calcula de tras pra diante no vetor para dar as sobras pra quem tem
   //   maior pontuação
-  //fprintf(stderr, "desc %d:", especie->id);
   for (int i = especie->n_individuos - 1; i >= 0; i--) {
     Individuo *individuo = especie->individuos[i];
     total_descendentes += individuo->pontuacao / pontuacao_media;
     int n_descendentes_int = total_descendentes - total_descendentes_int;
-    //fprintf(stderr, " %d", individuo->n_descendentes);
     total_descendentes_int += n_descendentes_int;
   }
-  //fprintf(stderr, "tot %d\n", total_descendentes_int);
   especie->n_descendentes = total_descendentes_int;
   return total_descendentes_int;
 }
@@ -937,11 +887,9 @@ void calcula_descendentes_por_especie(Geracao *geracao)
   // calcular o número de descendentes para cada indivíduo/espécie, e o total
   int n_descendentes = 0;
   for (int e = 0; e < geracao->n_especies; e++) {
-    //fprintf(stderr, "calc e%d nd%d ", geracao->especies[e].id, n_descendentes);
     n_descendentes += especie_calcula_descendentes(&geracao->especies[e], geracao->pontuacao_media);
   }
   // entrega as sobras para a espécie campeã (pode ter erro de arredondamento nos cálculos das espécies)
-  //fprintf(stderr, "sobra %d\n", N_INDIVIDUOS - n_descendentes);
   geracao->especies[0].n_descendentes += N_INDIVIDUOS - n_descendentes;
 }
 
@@ -951,7 +899,7 @@ void povoa_geracao(Geracao *geracao)
   geracao->id = 0;
   for (int i = 0; i < N_INDIVIDUOS; i++) {
     geracao->individuos[i] = individuo_cria_aleatorio();
-    //rede_faz_mutacao(geracao->individuos[i]);
+    realiza_mutacoes(geracao->individuos[i]);
   }
   geracao->n_individuos = N_INDIVIDUOS;
   separa_especies(geracao);

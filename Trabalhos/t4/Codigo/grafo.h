@@ -17,7 +17,7 @@ typedef struct grafo *Grafo;
 // as arestas são direcionadas, e são identificadas pelo nó de origem e
 //   de destino.
 
-// cria um grafo vazio que suporta dados do tamanho fornecido (em bytes)
+// cria um grafo vazio que suporta dados dos tamanhos fornecidos (em bytes)
 //   nos nós e nas arestas
 Grafo grafo_cria(int tam_no, int tam_aresta);
 
@@ -26,21 +26,21 @@ void grafo_destroi(Grafo self);
 
 // Nós
 
-// insere um nó no grafo, com o dado apontado por pdado
+// insere um nó no grafo, com o dado apontado por pdado (copia o conteúdo
+//   de *pdado).
 // retorna o número do novo nó
 int grafo_insere_no(Grafo self, void *pdado);
 
-// remove um nó do grafo e as arestas incidentes nesse nó
+// remove um nó do grafo e as arestas incidentes nesse nó.
 // a identificação dos nós remanescentes é alterada, como se esse nó
-//   nunca tivesse existido
+//   nunca tivesse existido.
 void grafo_remove_no(Grafo self, int no);
 
-// altera o valor associado a um nó (copia o valor apontado por pdado
-//   para o nó)
-void grafo_altera_valor_no(Grafo self, int no, void *pdado);
+// retorna um ponteiro para o valor associado ao nó "no"
+void *grafo_no(Grafo self, int no);
 
-// coloca em pdado o valor associado a um nó
-void grafo_valor_no(Grafo self, int no, void *pdado);
+// retorna ponteiro para o valor associado a um nó
+void *grafo_no(Grafo self, int no);
 
 // retorna o número de nós do grafo
 int grafo_nnos(Grafo self);
@@ -48,15 +48,14 @@ int grafo_nnos(Grafo self);
 // Arestas
 
 // altera o valor da aresta que interliga o nó origem ao nó destino
-//   (copia de *pdado)
+//   (copia o valor de *pdado)
 // caso a aresta não exista, deve ser criada
 // caso pdado seja NULL, a aresta deve ser removida
-void grafo_altera_valor_aresta(Grafo self, int origem, int destino, void *pdado);
+void grafo_altera_aresta(Grafo self, int origem, int destino, void *pdado);
 
-// coloca em pdado (se não for NULL) o valor associado à aresta, se existir
-// retorna true se a aresta entre os nós origem e destino existir, e false
-//   se não existir
-bool grafo_valor_aresta(Grafo self, int origem, int destino, void *pdado);
+// retorna um ponteiro para o valor associado à aresta entre os nós origem e
+//   destino existir, ou NULL se tal aresta não existir
+void *grafo_aresta(Grafo self, int origem, int destino);
 
 // inicia uma consulta a arestas que partem do nó origem
 // as próximas chamadas a 'grafo_proxima_aresta' devem retornar os valores
@@ -68,13 +67,12 @@ void grafo_arestas_que_partem(Grafo self, int origem);
 //   correspondentes à cada aresta que chega nesse nó
 void grafo_arestas_que_chegam(Grafo self, int destino);
 
-// retorna a próxima aresta, de acordo com a última consulta iniciada por 
-//   'grafo_arestas_que_partem' ou 'grafo_arestas_que_chegam'
-// o valor do nó vizinho ao nó da consulta deve ser colocado em 'vizinho'
-//   (se não for NULL); o valor associado à aresta deve ser colocado em
-//   '*pdado' (se não for NULL) e a função deve retornar true.
-// Caso não exista mais aresta que satisfaça a consulta, retorna false.
-bool grafo_proxima_aresta(Grafo self, int *vizinho, void *pdado);
+// retorna um ponteiro para o valor associado à próxima aresta.
+// a próxima aresta é definida de acordo com a última consulta iniciada por 
+//   'grafo_arestas_que_partem' ou 'grafo_arestas_que_chegam'.
+// se vizinho não for NULL, recebe o valor do nó vizinho ao nó da consulta.
+// caso não exista mais aresta que satisfaça a consulta, retorna NULL.
+void *grafo_proxima_aresta(Grafo self, int *vizinho);
 
 // Algoritmos
 
