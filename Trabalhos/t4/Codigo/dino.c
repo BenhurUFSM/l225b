@@ -574,24 +574,26 @@ void jogo_desenha(Jogo j)
   desenha_numero(j->canvas, 585, 5, j->pontos, 5);
   desenha_numero(j->canvas, 510, 5, j->recorde, 5);
   b_desenha(j->canvas, 430, 5, imagens[IM_HI]);
-  desenha_numero(j->canvas, 585, 20, j->distancia, 5);
-  desenha_numero(j->canvas, 585, 35, j->rex.pva.vel.x, 3);
-  b_desenha(j->canvas, j->entradas[0]*600-5, 2, imagens[IM_E1]);
-  b_desenha(j->canvas, j->entradas[1]*600-8, 2, imagens[IM_E1]);
-  b_desenha(j->canvas, j->entradas[2]*600-5, 11, imagens[IM_E1]);
-  b_desenha(j->canvas, j->entradas[3]*600-5, 8, imagens[IM_E1]);
-  b_desenha(j->canvas, j->entradas[4]*600-5, 5, imagens[IM_E1]);
-  b_desenha(j->canvas, j->entradas[5]*600-8, 11, imagens[IM_E1]);
-  b_desenha(j->canvas, j->entradas[6]*600-8, 8, imagens[IM_E1]);
-  b_desenha(j->canvas, j->entradas[7]*600-8, 5, imagens[IM_E1]);
-  desenha_numero(j->canvas, 545, 50, j->entradas[0]*600,3);
-  desenha_numero(j->canvas, 585, 50, j->entradas[1]*600,3);
-  desenha_numero(j->canvas, 545, 95, j->entradas[2]*600,3);
-  desenha_numero(j->canvas, 545, 80, j->entradas[3]*600,3);
-  desenha_numero(j->canvas, 545, 65, j->entradas[4]*600,3);
-  desenha_numero(j->canvas, 585, 95, j->entradas[5]*600,3);
-  desenha_numero(j->canvas, 585, 80, j->entradas[6]*600,3);
-  desenha_numero(j->canvas, 585, 65, j->entradas[7]*600,3);
+  if (j->tem_rede_neural) {
+    desenha_numero(j->canvas, 585, 20, j->distancia, 5);
+    desenha_numero(j->canvas, 585, 35, j->rex.pva.vel.x, 3);
+    b_desenha(j->canvas, j->entradas[0]*600-5, 2, imagens[IM_E1]);
+    b_desenha(j->canvas, j->entradas[1]*600-8, 2, imagens[IM_E1]);
+    b_desenha(j->canvas, j->entradas[2]*600-5, 11, imagens[IM_E1]);
+    b_desenha(j->canvas, j->entradas[3]*600-5, 8, imagens[IM_E1]);
+    b_desenha(j->canvas, j->entradas[4]*600-5, 5, imagens[IM_E1]);
+    b_desenha(j->canvas, j->entradas[5]*600-8, 11, imagens[IM_E1]);
+    b_desenha(j->canvas, j->entradas[6]*600-8, 8, imagens[IM_E1]);
+    b_desenha(j->canvas, j->entradas[7]*600-8, 5, imagens[IM_E1]);
+    desenha_numero(j->canvas, 545, 50, j->entradas[0]*600,3);
+    desenha_numero(j->canvas, 585, 50, j->entradas[1]*600,3);
+    desenha_numero(j->canvas, 545, 95, j->entradas[2]*600,3);
+    desenha_numero(j->canvas, 545, 80, j->entradas[3]*600,3);
+    desenha_numero(j->canvas, 545, 65, j->entradas[4]*600,3);
+    desenha_numero(j->canvas, 585, 95, j->entradas[5]*600,3);
+    desenha_numero(j->canvas, 585, 80, j->entradas[6]*600,3);
+    desenha_numero(j->canvas, 585, 65, j->entradas[7]*600,3);
+  }
 
   tela_lincol(1, 1);
   tela_cor_fundo(50,50,50);

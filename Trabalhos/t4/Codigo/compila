@@ -1,2 +1,2 @@
 gcc -o main main.c rede.c fila.c grafo.c dino.c tela.c utf8.c bits.c lista.c -g -lm
-gcc -O3 rede-treinamento.c rede.c fila.c grafo.c dino.c tela.c utf8.c bits.c lista.c -g -lm
+gcc -O3 -o treina rede-treinamento.c rede.c fila.c grafo.c dino.c tela.c utf8.c bits.c lista.c -g -lm
