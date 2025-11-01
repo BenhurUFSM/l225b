@@ -18,3 +18,20 @@ Se o programa for executado com `./main rede-exemplo`, vai executar controlado p
 
 O programa `treina` faz o treinamento de redes, partindo de uma geração de redes vazias alteradas aleatoriamente. Essas redes são usadas para executar o jogo (sem tela), e as que obtiverem melhor pontuação são usadas para produzir uma nova geração de redes.
 A melhor de cada geração é gravada em um arquivo no diretório `G` (que deve ser criado).
+
+## RAP
+
+1. Como funciona `fila_proximo`?
+
+   Se a fila `f` contiver A, B, C:
+
+   Se for chamado `fila_inicia_percurso(f, 0)`, e depois for chamado `fila_proximo(f, p)` várias vezes:
+   - a primeira chamada vai colocar A em *p e retornar true;
+   - a segunda chamada vai colocar B em *p e retornar true;
+   - a terceira chamada vai colocar C em *p e retornar true;
+   - a quarta, quinta etc chamadas vão retornar false.
+
+   Se for chamado fila_inicia_percurso(f, -2), e depois for chamado fila_proximo(f, p) várias vezes:
+   - a primeira chamada vai colocar B em *p e retornar true;
+   - a segunda chamada vai colocar A em *p e retornar true;
+   - a terceira, quarta, quinta etc chamadas vão retornar false.
