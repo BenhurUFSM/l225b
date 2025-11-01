@@ -74,7 +74,10 @@ Os assuntos vistos em aula serão listados aqui.
 |   20 |  13out | [grafos, detecção de ciclos](Assuntos/grafos.md#detecção-de-ciclos)
 |   21 |  15out | [grafos, ordem topológica](Assuntos/grafos.md#ordem-topológica)
 |   22 |  20out | [grafos, árvore geradora](Assuntos/grafos.md#árvore-geradora)
+|   23 |  22out | [grafos, caminho mais curto](Assuntos/grafos.md#caminho-mais-curto)
+|   24 |  29out | funcionamento do treinamento da rede do trabalho 4
 
+**Na semana da SAINF e da JAI (3 a 7 nov) não teremos aulas presenciais.**
 
 ## Exercícios, trabalhos
 
