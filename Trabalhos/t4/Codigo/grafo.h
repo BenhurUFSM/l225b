@@ -39,9 +39,6 @@ void grafo_remove_no(Grafo self, int no);
 // retorna um ponteiro para o valor associado ao nó "no"
 void *grafo_no(Grafo self, int no);
 
-// retorna ponteiro para o valor associado a um nó
-void *grafo_no(Grafo self, int no);
-
 // retorna o número de nós do grafo
 int grafo_nnos(Grafo self);
 
