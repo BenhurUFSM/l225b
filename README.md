@@ -87,6 +87,9 @@ Os assuntos vistos em aula serão listados aqui.
 |    T2 |      6out | [suporte a unicode nas strings; lista de strings](Trabalhos/t2)
 |    T3 |     15out | [fila de prioridade](Trabalhos/t3)
 |    T4 |           | [grafo](Trabalhos/t4)
+|       |     24nov | entrega final
+|       |  24n-1dez | entrevistas presenciais individuais
+|       |      8dez | exame
 
 ## Dados individuais
 
