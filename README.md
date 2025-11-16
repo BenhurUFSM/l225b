@@ -77,7 +77,6 @@ Os assuntos vistos em aula serão listados aqui.
 |   23 |  22out | [grafos, caminho mais curto](Assuntos/grafos.md#caminho-mais-curto)
 |   24 |  29out | funcionamento do treinamento da rede do trabalho 4
 
-**Na semana da SAINF e da JAI (3 a 7 nov) não teremos aulas presenciais.**
 
 ## Exercícios, trabalhos
 
@@ -87,7 +86,7 @@ Os assuntos vistos em aula serão listados aqui.
 |    T2 |      6out | [suporte a unicode nas strings; lista de strings](Trabalhos/t2)
 |    T3 |     15out | [fila de prioridade](Trabalhos/t3)
 |    T4 |           | [grafo](Trabalhos/t4)
-|       |     24nov | entrega final
+|       |     24nov | [entrega final](Complementos/final.md)
 |       |  24n-1dez | entrevistas presenciais individuais
 |       |      8dez | exame
 
