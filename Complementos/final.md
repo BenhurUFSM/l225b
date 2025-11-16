@@ -17,7 +17,7 @@ Além desse e-mail, tem que ter uma conversa individual com o professor, em hor�
 
 O texto de auto-avaliação deve conter uma nota que, segundo o aluno, traduz seu desempenho na disciplina.
 A nota deve medir duas coisas, mais ou menos com mesmo peso: 
-- o desenvolvimento dos exercícios e trabalhos (todos, com peso bem maior para os últimos)
+- o desenvolvimento dos exercícios e trabalhos (todos, com peso maior para os últimos)
   - foi feito o que foi pedido?
   - funciona?
   - serviu para aprender os conceitos relacionados?
