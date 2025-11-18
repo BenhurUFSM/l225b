@@ -94,6 +94,11 @@ Os assuntos vistos em aula serão listados aqui.
 
 Na [planilha](https://docs.google.com/spreadsheets/d/1xBdLXID03J-N9uPoaCywutAShOdyLN_fFFh9HcTSQA0/edit?usp=sharing).
 
+Nas colunas finais da tabela tem a data, turno e ordem para a conversa final.
+Cada conversa leva alguns minutos, mas as vezes leva mais, por isso só tem a ordem e não o horário individual.
+
+***As conversas serão na sala 376, 3º andar do anexo B.***
+
 ## Bibliografia
 
 Os livros abaixo estão disponíveis no [minha biblioteca](https://www.ufsm.br/orgaos-suplementares/biblioteca/e-books-2/), acessível aos alunos da UFSM.
